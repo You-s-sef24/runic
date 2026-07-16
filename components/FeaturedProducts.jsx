@@ -1,22 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import useGetProducts from "@/hooks/products/useGetProducts";
 import { Button } from "./ui/button";
 import ProductCard from "./ProductCard";
+import useGetFeaturedProducts from "@/hooks/products/useGetFeaturedProducts";
 
 export default function FeaturedProducts() {
-  const { data: products, isLoading, isError } = useGetProducts();
+  const { data: products, isLoading, isError } = useGetFeaturedProducts();
 
   return (
     <section className="py-10 sm:py-14">
       <div className="flex items-center justify-between mb-6 sm:mb-8">
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
-          Featured Products
+          Featured Collection
         </h2>
-        <Link href="/all-products">
+        <Link href="/collection">
           <Button className="bg-blue-900 hover:bg-blue-950 cursor-pointer">
-            See All Products
+            See All Collection
           </Button>
         </Link>
       </div>

@@ -26,7 +26,7 @@ export default function AppSidebar() {
 
   const navItems = [
     { to: "/", label: "Home", icon: HomeIcon },
-    { to: "/products", label: "Products", icon: FrameIcon },
+    { to: "/collection", label: "Collection", icon: FrameIcon },
     { to: "/cart", label: "Cart", icon: ShoppingCart },
     { to: "/orders", label: "Orders", icon: Package },
     { to: "/about", label: "About", icon: Info },
