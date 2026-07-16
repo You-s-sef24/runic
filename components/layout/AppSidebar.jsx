@@ -11,6 +11,8 @@ import {
   Info,
   HomeIcon,
   FrameIcon,
+  LogIn,
+  UserPlus,
 } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter, usePathname } from "next/navigation";
@@ -20,21 +22,27 @@ import Image from "next/image";
 export default function AppSidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const user = useAuthStore((s) => s.user);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const logout = useAuthStore((s) => s.logout);
   const router = useRouter();
   const pathname = usePathname();
 
   const navItems = [
     { to: "/", label: "Home", icon: HomeIcon },
-    { to: "/collection", label: "Collection", icon: FrameIcon },
+    { to: "/products", label: "Collection", icon: FrameIcon },
     { to: "/cart", label: "Cart", icon: ShoppingCart },
-    { to: "/orders", label: "Orders", icon: Package },
+    { to: "/orders", label: "Orders", icon: Package, authOnly: true },
     { to: "/about", label: "About", icon: Info },
-    { to: "/settings", label: "Settings", icon: Settings },
+    { to: "/settings", label: "Settings", icon: Settings, authOnly: true },
   ];
+
+  const visibleNavItems = navItems.filter(
+    (item) => !item.authOnly || isAuthenticated,
+  );
 
   function handleLogout() {
     logout();
+    setIsOpen(false);
     router.push("/");
   }
 
@@ -86,7 +94,7 @@ export default function AppSidebar() {
         </div>
 
         <nav className="flex-1 px-3 py-5 space-y-1">
-          {navItems.map(({ to, label, icon: Icon }) => {
+          {visibleNavItems.map(({ to, label, icon: Icon }) => {
             const isActive =
               to === "/" ? pathname === "/" : pathname.startsWith(to);
 
@@ -114,26 +122,49 @@ export default function AppSidebar() {
         </nav>
 
         <div className="border-t border-blue-100 dark:border-blue-900/30 p-4">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900/60 flex items-center justify-center text-blue-900 dark:text-blue-300 font-semibold">
-              {user?.name?.charAt(0)?.toUpperCase() || "A"}
+          {isAuthenticated ? (
+            <>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900/60 flex items-center justify-center text-blue-900 dark:text-blue-300 font-semibold">
+                  {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                </div>
+                <div className="flex flex-col overflow-hidden">
+                  <span className="text-sm font-medium truncate text-blue-950 dark:text-blue-100">
+                    {user?.name}
+                  </span>
+                  <span className="text-xs text-gray-500 dark:text-blue-300/60 truncate">
+                    {user?.email}
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer"
+              >
+                <LogOut size={18} />
+                Logout
+              </button>
+            </>
+          ) : (
+            <div className="space-y-2">
+              <Link
+                href="/sign-in"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm font-medium text-blue-900 dark:text-blue-300 bg-blue-50/60 dark:bg-blue-900/30 hover:bg-blue-100/70 dark:hover:bg-blue-900/50 transition-colors"
+              >
+                <LogIn size={18} />
+                Sign In
+              </Link>
+              <Link
+                href="/sign-up"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-blue-100/70 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-colors"
+              >
+                <UserPlus size={18} />
+                Sign Up
+              </Link>
             </div>
-            <div className="flex flex-col overflow-hidden">
-              <span className="text-sm font-medium truncate text-blue-950 dark:text-blue-100">
-                {user?.name}
-              </span>
-              <span className="text-xs text-gray-500 dark:text-blue-300/60 truncate">
-                {user?.email}
-              </span>
-            </div>
-          </div>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer"
-          >
-            <LogOut size={18} />
-            Logout
-          </button>
+          )}
         </div>
       </aside>
     </>

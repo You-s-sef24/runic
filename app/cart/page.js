@@ -5,12 +5,15 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { Trash2, Plus, Minus, ShoppingBag, ChevronRight, ArrowLeft } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
+import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
+    const router = useRouter();
     const cartItems = useCartStore((state) => state.cart);
     const updateQuantity = useCartStore((state) => state.updateQuantity);
     const removeFromCart = useCartStore((state) => state.removeFromCart);
-
+    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
     function handleQuantityChange(id, currentQty, delta) {
         updateQuantity(id, currentQty + delta);
     }
@@ -18,6 +21,14 @@ export default function CartPage() {
     function handleRemove(id, name) {
         removeFromCart(id);
         toast.success(`Removed ${name} from cart`);
+    }
+
+    function handleCheckoutClick(e) {
+        if (!isAuthenticated) {
+            e.preventDefault();
+            toast.error("Please sign in to continue to checkout");
+            router.push("/sign-in");
+        }
     }
 
     const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
@@ -185,7 +196,8 @@ export default function CartPage() {
                     </div>
 
                     <Link
-                        href={"/checkout"}
+                        href="/checkout"
+                        onClick={handleCheckoutClick}
                         className="w-full flex items-center justify-center bg-blue-900 hover:bg-blue-950 active:scale-[0.98] text-white rounded-xl py-3.5 text-sm font-semibold tracking-wide transition-all duration-200 cursor-pointer shadow-lg shadow-blue-900/15"
                     >
                         Proceed to Checkout
