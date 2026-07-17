@@ -84,6 +84,7 @@ export default function CartPage() {
                                     src={item.image || "/placeholder.png"}
                                     alt={item.name?.en || item.title || "Product"}
                                     fill
+                                    unoptimized
                                     sizes="96px"
                                     className="object-contain p-2 drop-shadow-[0_4px_12px_rgba(0,0,0,0.06)]"
                                 />

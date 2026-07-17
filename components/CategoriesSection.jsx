@@ -43,6 +43,7 @@ export default function CategorySection() {
             <div className="absolute inset-0 z-0">
               <Image
                 fill
+                unoptimized
                 src={category.imageUrl}
                 alt={category.name}
                 className="object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"

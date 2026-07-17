@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function HeroSection() {
   return (
@@ -23,16 +23,17 @@ export default function HeroSection() {
           Every Portrait Deserves the Right Frame
         </h1>
         <p className="mt-4 text-sm sm:text-base text-blue-100/80 max-w-md leading-relaxed">
-          Morbi justo sem, venenatis sit amet tortor id, porttitor facilisis
-          mauris. Vivamus fringilla elit eu felis iaculis cursus.
+          Discover handpicked frames, boards, and decor pieces crafted to turn
+          your favorite moments into lasting displays — delivered anywhere in
+          Egypt.
         </p>
         <div className="mt-7 flex items-center gap-3">
-          <Button
-            variant="outline"
-            className="bg-transparent text-white border-white/40 hover:bg-white/10 hover:text-white cursor-pointer"
+          <Link
+            href="/collection"
+            className="inline-flex items-center justify-center rounded-lg border border-white/40 bg-transparent px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10 cursor-pointer"
           >
             View Collection
-          </Button>
+          </Link>
         </div>
       </div>
     </div>

@@ -242,6 +242,7 @@ export default function CheckoutPage() {
                                                     src={item.image || "/placeholder.png"}
                                                     alt={item.name?.en || "Product"}
                                                     fill
+                                                    unoptimized
                                                     sizes="56px"
                                                     className="object-contain p-1 drop-shadow-xs"
                                                 />

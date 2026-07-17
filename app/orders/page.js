@@ -121,6 +121,7 @@ export default function OrdersPage() {
                                                     src={item.image || "/placeholder.png"}
                                                     alt={item.name?.en || "Product"}
                                                     fill
+                                                    unoptimized
                                                     sizes="64px"
                                                     className="object-contain p-2"
                                                 />
