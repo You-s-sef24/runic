@@ -65,8 +65,6 @@ export default function CartPage() {
             <nav className="flex items-center gap-2 text-xs font-medium text-gray-400 mb-8 tracking-wide uppercase">
                 <Link href="/" className="hover:text-blue-900 transition-colors">Home</Link>
                 <ChevronRight size={12} className="opacity-60" />
-                <Link href="/collection" className="hover:text-blue-900 transition-colors">Collection</Link>
-                <ChevronRight size={12} className="opacity-60" />
                 <span className="text-gray-600">Your Cart</span>
             </nav>
 
