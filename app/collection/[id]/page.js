@@ -50,7 +50,7 @@ export default function ProductDetailsPage() {
         );
     }
 
-    const { image, name, price, dimensions, desc } = product;
+    const { image, name, price, dimensions, desc, category } = product;
 
     return (
         <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
@@ -97,10 +97,17 @@ export default function ProductDetailsPage() {
                         )}
 
                         {dimensions && (
-                            <div className="inline-flex flex-col bg-zinc-50 border border-gray-100/85 rounded-lg px-4 py-2.5 self-start">
-                                <span className="text-[10px] text-gray-400 uppercase tracking-wider mb-0.5">Frame Size</span>
-                                <span className="text-sm text-gray-900 font-semibold">{dimensions} in</span>
+                            <div className="flex items-center gap-2">
+                                <div className="inline-flex flex-col bg-zinc-50 border border-gray-100/85 rounded-lg px-4 py-2.5 self-start">
+                                    <span className="text-[10px] text-gray-400 uppercase tracking-wider mb-0.5">Frame Size</span>
+                                    <span className="text-sm text-gray-900 font-semibold">{dimensions} in</span>
+                                </div>
+                                <div className="inline-flex flex-col bg-zinc-50 border border-gray-100/85 rounded-lg px-4 py-2.5 self-start">
+                                    <span className="text-[10px] text-gray-400 uppercase tracking-wider mb-0.5">Category</span>
+                                    <span className="text-sm text-gray-900 font-semibold">{category.en}</span>
+                                </div>
                             </div>
+
                         )}
                     </div>
 

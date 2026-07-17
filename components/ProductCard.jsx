@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -6,7 +8,7 @@ import { Button } from "@base-ui/react";
 import { useCartStore } from "@/store/cartStore";
 
 export default function ProductCard({ product }) {
-  const { image, name, price, dimensions, id } = product;
+  const { image, name, price, dimensions, id, category } = product;
   const addToCart = useCartStore((state) => state.addToCart);
 
   function handleAddToCart(e) {
@@ -36,6 +38,12 @@ export default function ProductCard({ product }) {
         </div>
 
         <div className="flex flex-col flex-1 p-4">
+          {category && (
+            <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-widest mb-1.5 block">
+              {category.en}
+            </span>
+          )}
+
           <h3 className="font-medium text-zinc-800 text-[15px] tracking-tight line-clamp-1 leading-snug group-hover:text-zinc-600 transition-colors duration-300">
             {name.en}
           </h3>

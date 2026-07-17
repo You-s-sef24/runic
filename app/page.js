@@ -1,3 +1,4 @@
+import CategorySection from "@/components/CategoriesSection";
 import FeaturedProducts from "@/components/FeaturedProducts";
 import HeroSection from "@/components/HeroSection";
 import StreamlinedShopping from "@/components/Streamlinedshopping ";
@@ -8,6 +9,7 @@ export default function HomePage() {
       <div className="max-w-6xl mx-auto space-y-16 sm:space-y-24">
 
         <HeroSection />
+        <CategorySection />
         <FeaturedProducts />
         <StreamlinedShopping />
 
