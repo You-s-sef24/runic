@@ -6,7 +6,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
-import { ChevronRight, ArrowLeft, Truck, ShieldCheck } from "lucide-react";
+import { ChevronRight, ArrowLeft, Truck, ShieldCheck, Minus, Plus } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import { useAuthStore } from "@/store/authStore";
 import useCreateOrder from "@/hooks/orders/useCreateOrder";
@@ -30,6 +30,8 @@ const EGYPT_GOVERNORATES = [
     "Beni Suef", "Fayoum", "Minya", "Assiut", "Sohag", "Qena",
     "Luxor", "Aswan", "Red Sea", "New Valley", "Matrouh",
 ];
+
+const NAIL_PRICE = 2;
 
 const checkoutSchema = z.object({
     email: z.string().min(1, "Email is required").email("Enter a valid email"),
@@ -59,10 +61,12 @@ export default function CheckoutPage() {
         city: "",
     });
     const [errors, setErrors] = useState({});
+    const [nails, setNails] = useState(0);
 
     const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const shipping = subtotal > 150 ? 0 : 15.0;
-    const total = subtotal + shipping;
+    const nailsFee = nails * NAIL_PRICE;
+    const total = subtotal + shipping + nailsFee;
 
     function handleChange(e) {
         const { id, value } = e.target;
@@ -89,8 +93,12 @@ export default function CheckoutPage() {
 
         setErrors({});
 
+        const shippingAddress = `${formData.address}, ${formData.city}, ${formData.governorate}`;
+
         const orderPayload = {
             userId: user.id,
+            customerName: formData.fullName,
+            customerEmail: formData.email,
             items: items.map((item) => ({
                 productId: item.id,
                 name: item.name,
@@ -98,12 +106,10 @@ export default function CheckoutPage() {
                 price: item.price,
                 quantity: item.quantity,
             })),
-            shippingInfo: formData,
-            subtotal,
-            shipping,
             total,
+            shippingAddress,
             status: "pending",
-            paymentMethod: "cash_on_delivery",
+            nails,
             createdAt: Math.floor(Date.now() / 1000),
         };
 
@@ -262,7 +268,36 @@ export default function CheckoutPage() {
                                     ))}
                                 </div>
 
-                                <div className="py-6 border-t border-b border-gray-100 text-sm font-medium space-y-3 mt-4">
+                                <div className="py-4 border-b border-gray-100 flex items-center justify-between">
+                                    <div>
+                                        <p className="text-sm font-semibold text-gray-900">Add Nails</p>
+                                        <p className="text-xs text-gray-400 mt-0.5">${NAIL_PRICE.toFixed(2)} each</p>
+                                    </div>
+                                    <div className="flex items-center gap-3 bg-zinc-50 border border-gray-100 rounded-lg px-2.5 py-1">
+                                        <button
+                                            type="button"
+                                            onClick={() => setNails((n) => Math.max(0, n - 1))}
+                                            disabled={nails <= 0}
+                                            className="text-gray-500 hover:text-blue-900 p-0.5 transition-colors disabled:opacity-30 cursor-pointer"
+                                            aria-label="Decrease nails"
+                                        >
+                                            <Minus className="w-3.5 h-3.5" />
+                                        </button>
+                                        <span className="text-sm font-semibold text-gray-800 w-4 text-center select-none">
+                                            {nails}
+                                        </span>
+                                        <button
+                                            type="button"
+                                            onClick={() => setNails((n) => n + 1)}
+                                            className="text-gray-500 hover:text-blue-900 p-0.5 transition-colors cursor-pointer"
+                                            aria-label="Increase nails"
+                                        >
+                                            <Plus className="w-3.5 h-3.5" />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="py-6 border-b border-gray-100 text-sm font-medium space-y-3">
                                     <div className="flex justify-between text-gray-500">
                                         <span>Subtotal</span>
                                         <span className="text-gray-950">${subtotal.toFixed(2)}</span>
@@ -277,6 +312,12 @@ export default function CheckoutPage() {
                                             )}
                                         </span>
                                     </div>
+                                    {nails > 0 && (
+                                        <div className="flex justify-between text-gray-500">
+                                            <span>Nails ({nails})</span>
+                                            <span className="text-gray-950">${nailsFee.toFixed(2)}</span>
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="py-6 flex justify-between items-center">

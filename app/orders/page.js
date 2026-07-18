@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Package, Clock, CheckCircle2, XCircle, Truck, ArrowLeft, ChevronRight } from "lucide-react";
+import { Package, Clock, CheckCircle2, XCircle, Truck, ArrowLeft, Hammer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/authStore";
 import useGetOrders from "@/hooks/orders/useGetOrders";
@@ -29,11 +29,12 @@ export default function OrdersPage() {
         <ProtectedRoutes>
             <main className="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
                 <div className="mb-8">
-                    <nav className="flex items-center gap-2 text-xs font-medium text-gray-400 mb-8 tracking-wide uppercase">
-                        <Link href="/" className="hover:text-blue-900 transition-colors">Home</Link>
-                        <ChevronRight size={12} className="opacity-60" />
-                        <span className="text-gray-600 truncate max-w-[180px]">Orders</span>
-                    </nav>
+                    <Link
+                        href="/collection"
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-zinc-900 transition-colors uppercase tracking-wider mb-4"
+                    >
+                        <ArrowLeft size={14} /> Back to Shop
+                    </Link>
                     <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight">
                         Your Orders
                     </h1>
@@ -113,45 +114,59 @@ export default function OrdersPage() {
                                     </div>
                                 </div>
 
-                                <div className="divide-y divide-zinc-100">
-                                    {order.items.map((item, i) => (
-                                        <div key={`${order.id}-${i}`} className="p-5 flex items-start gap-4">
-                                            <div className="relative w-16 h-20 rounded bg-zinc-50 border border-zinc-100 flex-shrink-0 overflow-hidden">
-                                                <Image
-                                                    src={item.image || "/placeholder.png"}
-                                                    alt={item.name?.en || "Product"}
-                                                    fill
-                                                    unoptimized
-                                                    sizes="64px"
-                                                    className="object-contain p-2"
-                                                />
-                                            </div>
+                                {order.items.length > 0 && (
+                                    <div className="divide-y divide-zinc-100">
+                                        {order.items.map((item, i) => (
+                                            <div key={`${order.id}-${i}`} className="p-5 flex items-start gap-4">
+                                                <div className="relative w-16 h-20 rounded bg-zinc-50 border border-zinc-100 flex-shrink-0 overflow-hidden">
+                                                    <Image
+                                                        src={item.image || "/placeholder.png"}
+                                                        alt={item.name?.en || "Product"}
+                                                        fill
+                                                        unoptimized
+                                                        sizes="64px"
+                                                        className="object-contain p-2"
+                                                    />
+                                                </div>
 
-                                            <div className="flex-1 min-w-0">
-                                                <h4 className="font-semibold text-zinc-800 text-sm leading-tight hover:text-zinc-600 truncate">
-                                                    <Link href={`/collection/${item.productId}`}>{item.name?.en}</Link>
-                                                </h4>
-                                                <div className="flex items-center gap-3 text-xs text-zinc-500 mt-2">
-                                                    <span>
-                                                        Qty: <strong className="text-zinc-700">{item.quantity}</strong>
-                                                    </span>
-                                                    <span className="w-1 h-1 rounded-full bg-zinc-300" />
-                                                    <span>
-                                                        Unit Price:{" "}
-                                                        <strong className="text-zinc-700">${item.price.toFixed(2)}</strong>
-                                                    </span>
+                                                <div className="flex-1 min-w-0">
+                                                    <h4 className="font-semibold text-zinc-800 text-sm leading-tight hover:text-zinc-600 truncate">
+                                                        <Link href={`/collection/${item.productId}`}>{item.name?.en}</Link>
+                                                    </h4>
+                                                    <div className="flex items-center gap-3 text-xs text-zinc-500 mt-2">
+                                                        <span>
+                                                            Qty: <strong className="text-zinc-700">{item.quantity}</strong>
+                                                        </span>
+                                                        <span className="w-1 h-1 rounded-full bg-zinc-300" />
+                                                        <span>
+                                                            Unit Price:{" "}
+                                                            <strong className="text-zinc-700">${item.price.toFixed(2)}</strong>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex flex-col gap-2 self-center">
+                                                    <Link href={`/collection/${item.productId}`}>
+                                                        <Button variant="outline" className="text-xs font-semibold py-1.5 px-3 h-auto cursor-pointer">
+                                                            Buy Again
+                                                        </Button>
+                                                    </Link>
                                                 </div>
                                             </div>
+                                        ))}
+                                    </div>
+                                )}
 
-                                            <div className="flex flex-col gap-2 self-center">
-                                                <Link href={`/collection/${item.productId}`}>
-                                                    <Button variant="outline" className="text-xs font-semibold py-1.5 px-3 h-auto cursor-pointer">
-                                                        Buy Again
-                                                    </Button>
-                                                </Link>
-                                            </div>
-                                        </div>
-                                    ))}
+                                <div className="px-5 py-3 border-t border-zinc-100 bg-zinc-50/30 space-y-1">
+                                    <p className="text-xs text-zinc-500">
+                                        Shipping to: <span className="text-zinc-700">{order.shippingAddress}</span>
+                                    </p>
+                                    {order.nails > 0 && (
+                                        <p className="text-xs text-zinc-500 flex items-center gap-1.5">
+                                            <Hammer className="w-3 h-3" />
+                                            Nails included: <span className="text-zinc-700 font-medium">{order.nails}</span>
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         ))}
