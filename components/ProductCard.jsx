@@ -20,8 +20,8 @@ export default function ProductCard({ product }) {
 
   return (
     <Link href={`/collection/${id}`} className="group block w-full">
-      <div className="flex flex-col w-full h-full rounded-xl border border-zinc-100 bg-white overflow-hidden transition-all duration-500 hover:border-zinc-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)]">
-        <div className="relative aspect-[4/5] bg-zinc-50 flex items-center justify-center overflow-hidden">
+      <div className="flex flex-col w-full h-full rounded-xl border border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 overflow-hidden transition-all duration-500 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
+        <div className="relative aspect-[4/5] bg-zinc-50 dark:bg-zinc-900/20 flex items-center justify-center overflow-hidden">
           <Image
             src={image || "/placeholder.png"}
             alt={name.en}
@@ -32,7 +32,7 @@ export default function ProductCard({ product }) {
           />
 
           {dimensions && (
-            <span className="absolute top-3 left-3 text-[10px] font-semibold tracking-widest text-zinc-500 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded border border-zinc-200/50 uppercase">
+            <span className="absolute top-3 left-3 text-[10px] font-semibold tracking-widest text-zinc-500 dark:text-zinc-400 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md px-2.5 py-1 rounded border border-zinc-200/50 dark:border-zinc-800 uppercase">
               {dimensions} in
             </span>
           )}
@@ -40,24 +40,24 @@ export default function ProductCard({ product }) {
 
         <div className="flex flex-col flex-1 p-4">
           {category && (
-            <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-widest mb-1.5 block">
+            <span className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-1.5 block">
               {category.en}
             </span>
           )}
 
-          <h3 className="font-medium text-zinc-800 text-[15px] tracking-tight line-clamp-1 leading-snug group-hover:text-zinc-600 transition-colors duration-300">
+          <h3 className="font-medium text-zinc-800 dark:text-zinc-200 text-[15px] tracking-tight line-clamp-1 leading-snug group-hover:text-zinc-600 dark:group-hover:text-zinc-400 transition-colors duration-300">
             {name.en}
           </h3>
 
           <div className="mt-1">
-            <span className="font-semibold text-zinc-950 text-base tracking-tight">
+            <span className="font-semibold text-zinc-950 dark:text-zinc-100 text-base tracking-tight">
               ${price?.toFixed(2)}
             </span>
           </div>
 
           <Button
             onClick={handleAddToCart}
-            className="mt-4 w-full flex items-center justify-center gap-2 bg-blue-900 hover:bg-blue-950 text-white rounded-lg py-2.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-sm cursor-pointer"
+            className="mt-4 w-full flex items-center justify-center gap-2 bg-blue-900 hover:bg-blue-950 dark:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-lg py-2.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-sm cursor-pointer"
           >
             <ShoppingCart className="w-3.5 h-3.5 stroke-[2]" />
             Add to Cart

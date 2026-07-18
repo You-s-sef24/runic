@@ -48,11 +48,11 @@ export default function AppSidebar() {
 
   return (
     <>
-      <header className="md:hidden sticky top-0 z-30 flex items-center justify-between h-14 px-4 bg-white/80 dark:bg-blue-950/80 backdrop-blur-md border-b border-blue-100 dark:border-blue-900/30">
+      <header className="md:hidden sticky top-0 z-30 flex items-center justify-between h-14 px-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-b border-blue-100 dark:border-zinc-800">
         <button
           onClick={() => setIsOpen(true)}
           aria-label="Open sidebar"
-          className="text-blue-900 dark:text-blue-300 hover:opacity-80 transition-opacity"
+          className="text-blue-900 dark:text-zinc-300 hover:opacity-80 transition-opacity"
         >
           <Menu size={22} />
         </button>
@@ -68,16 +68,16 @@ export default function AppSidebar() {
 
       {isOpen && (
         <div
-          className="fixed inset-0 bg-blue-950/40 z-40 md:hidden backdrop-blur-xs"
+          className="fixed inset-0 bg-zinc-950/40 z-40 md:hidden backdrop-blur-xs"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       <aside
-        className={`fixed md:sticky md:top-0 top-0 start-0 z-50 flex flex-col w-64 h-screen bg-white dark:bg-blue-950 border-e border-blue-100 dark:border-blue-900/40 transition-transform duration-200
+        className={`fixed md:sticky md:top-0 top-0 start-0 z-50 flex flex-col w-64 h-screen bg-white dark:bg-zinc-900 border-e border-blue-100 dark:border-zinc-800 transition-all duration-200
           ${isOpen ? "translate-x-0" : "-translate-x-full rtl:translate-x-full"} md:translate-x-0`}
       >
-        <div className="flex items-center justify-between h-16 px-6 border-b border-blue-100 dark:border-blue-900/30">
+        <div className="flex items-center justify-between h-16 px-6 border-b border-blue-100 dark:border-zinc-800">
           <Image
             alt="Runic"
             src="/logo.png"
@@ -87,7 +87,7 @@ export default function AppSidebar() {
           />
           <button
             onClick={() => setIsOpen(false)}
-            className="md:hidden text-blue-900 dark:text-blue-400 hover:opacity-80"
+            className="md:hidden text-blue-900 dark:text-zinc-400 hover:opacity-80"
           >
             <X size={20} />
           </button>
@@ -105,14 +105,14 @@ export default function AppSidebar() {
                 onClick={() => setIsOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-blue-100/70 dark:bg-blue-900/40 text-blue-900 dark:text-blue-300"
-                    : "text-gray-600 dark:text-blue-100/70 hover:bg-blue-50/50 dark:hover:bg-blue-900/20"
+                    ? "bg-blue-100/70 dark:bg-zinc-800 text-blue-900 dark:text-zinc-100"
+                    : "text-gray-600 dark:text-zinc-400 hover:bg-blue-50/50 dark:hover:bg-zinc-800/50"
                 }`}
               >
                 <Icon
                   size={18}
                   className={
-                    isActive ? "text-blue-900 dark:text-blue-300" : "opacity-80"
+                    isActive ? "text-blue-900 dark:text-zinc-100" : "opacity-80"
                   }
                 />
                 {label}
@@ -121,25 +121,25 @@ export default function AppSidebar() {
           })}
         </nav>
 
-        <div className="border-t border-blue-100 dark:border-blue-900/30 p-4">
+        <div className="border-t border-blue-100 dark:border-zinc-800 p-4">
           {isAuthenticated ? (
             <>
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900/60 flex items-center justify-center text-blue-900 dark:text-blue-300 font-semibold">
+                <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-zinc-800 flex items-center justify-center text-blue-900 dark:text-zinc-200 font-semibold">
                   {user?.name?.charAt(0)?.toUpperCase() || "U"}
                 </div>
                 <div className="flex flex-col overflow-hidden">
-                  <span className="text-sm font-medium truncate text-blue-950 dark:text-blue-100">
+                  <span className="text-sm font-medium truncate text-blue-950 dark:text-zinc-200">
                     {user?.name}
                   </span>
-                  <span className="text-xs text-gray-500 dark:text-blue-300/60 truncate">
+                  <span className="text-xs text-gray-500 dark:text-zinc-400 truncate">
                     {user?.email}
                   </span>
                 </div>
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer"
+                className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors cursor-pointer"
               >
                 <LogOut size={18} />
                 Logout
@@ -150,7 +150,7 @@ export default function AppSidebar() {
               <Link
                 href="/sign-in"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm font-medium text-blue-900 dark:text-blue-300 bg-blue-50/60 dark:bg-blue-900/30 hover:bg-blue-100/70 dark:hover:bg-blue-900/50 transition-colors"
+                className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm font-medium text-blue-900 dark:text-zinc-200 bg-blue-50/60 dark:bg-zinc-800 hover:bg-blue-100/70 dark:hover:bg-zinc-700/60 transition-colors"
               >
                 <LogIn size={18} />
                 Sign In
@@ -158,7 +158,7 @@ export default function AppSidebar() {
               <Link
                 href="/sign-up"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-blue-100/70 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-colors"
+                className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-zinc-400 hover:bg-blue-50/50 dark:hover:bg-zinc-800/50 transition-colors"
               >
                 <UserPlus size={18} />
                 Sign Up

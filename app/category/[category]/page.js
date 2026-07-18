@@ -65,24 +65,25 @@ export default function CategoryProductsPage() {
         category.charAt(0).toUpperCase() + category.slice(1);
 
     return (
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
-            <nav className="flex items-center gap-2 text-xs font-medium text-gray-400 mb-8 tracking-wide uppercase">
-                <Link href="/" className="hover:text-blue-900 transition-colors">Home</Link>
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14 text-foreground">
+            {/* Breadcrumb Navigation */}
+            <nav className="flex items-center gap-2 text-xs font-medium text-muted-foreground mb-8 tracking-wide uppercase">
+                <Link href="/" className="hover:text-primary transition-colors">Home</Link>
                 <ChevronRight size={12} className="opacity-60" />
-                <span className="text-gray-600 truncate max-w-[180px]">{categoryTitle}</span>
+                <span className="text-foreground/70 truncate max-w-[180px]">{categoryTitle}</span>
             </nav>
 
             {/* Header Toolbar */}
-            <div className="flex items-center justify-between mb-8">
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+            <div className="flex items-center justify-between mb-8 gap-4">
+                <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
                     {categoryTitle}
                 </h1>
 
                 <Select value={sortValue} onValueChange={handleSortChange}>
-                    <SelectTrigger className="w-[200px]">
+                    <SelectTrigger className="w-[200px] bg-background border-input text-foreground">
                         <SelectValue placeholder="Sort by" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-popover border-border text-popover-foreground">
                         {SORT_OPTIONS.map((option) => (
                             <SelectItem key={option.value} value={option.value}>
                                 {option.label}
@@ -95,15 +96,15 @@ export default function CategoryProductsPage() {
             {/* Loading Skeleton Grid */}
             {isLoading && (
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-                    {[...Array(8)].map((_, i) => (
+                    {[...Array(PAGE_SIZE)].map((_, i) => (
                         <div
                             key={i}
-                            className="rounded-2xl border border-gray-200 p-4 animate-pulse"
+                            className="rounded-2xl border border-border p-4 animate-pulse bg-card text-card-foreground"
                         >
-                            <div className="aspect-[3/4] mb-4 bg-gray-100 rounded-md" />
-                            <div className="h-3 w-16 bg-gray-100 rounded mb-2" />
-                            <div className="h-4 w-32 bg-gray-100 rounded mb-2" />
-                            <div className="h-4 w-20 bg-gray-100 rounded" />
+                            <div className="aspect-[3/4] mb-4 bg-muted rounded-xl" />
+                            <div className="h-3 w-16 bg-muted rounded mb-2" />
+                            <div className="h-4 w-32 bg-muted rounded mb-2" />
+                            <div className="h-4 w-20 bg-muted rounded" />
                         </div>
                     ))}
                 </div>
@@ -111,14 +112,18 @@ export default function CategoryProductsPage() {
 
             {/* Error state */}
             {isError && (
-                <p className="text-sm text-red-600">
-                    Failed to load products for this category. Please try again later.
-                </p>
+                <div className="p-6 bg-destructive/5 border border-destructive/10 rounded-2xl">
+                    <p className="text-sm text-destructive font-medium">
+                        Failed to load products for this category. Please try again later.
+                    </p>
+                </div>
             )}
 
             {/* Empty state */}
             {!isLoading && !isError && filteredProducts.length === 0 && (
-                <p className="text-sm text-gray-500">No products found in this category.</p>
+                <div className="text-center py-12 border border-dashed border-border rounded-2xl bg-muted/10">
+                    <p className="text-sm text-muted-foreground font-medium">No products found in this category.</p>
+                </div>
             )}
 
             {/* Main Products Grid & Pagination */}
@@ -130,15 +135,15 @@ export default function CategoryProductsPage() {
                         ))}
                     </div>
 
-                    <Pagination className="mt-10">
+                    <Pagination className="mt-12">
                         <PaginationContent>
                             <PaginationItem>
                                 <PaginationPrevious
                                     onClick={() => page > 1 && setPage((p) => p - 1)}
                                     className={
                                         page === 1
-                                            ? "pointer-events-none opacity-40"
-                                            : "cursor-pointer"
+                                            ? "pointer-events-none opacity-40 text-muted-foreground"
+                                            : "cursor-pointer hover:bg-muted text-foreground transition-colors"
                                     }
                                 />
                             </PaginationItem>
@@ -148,7 +153,7 @@ export default function CategoryProductsPage() {
                                     <PaginationLink
                                         isActive={page === i + 1}
                                         onClick={() => setPage(i + 1)}
-                                        className="cursor-pointer"
+                                        className="cursor-pointer transition-colors"
                                     >
                                         {i + 1}
                                     </PaginationLink>
@@ -160,8 +165,8 @@ export default function CategoryProductsPage() {
                                     onClick={() => page < totalPages && setPage((p) => p + 1)}
                                     className={
                                         page === totalPages
-                                            ? "pointer-events-none opacity-40"
-                                            : "cursor-pointer"
+                                            ? "pointer-events-none opacity-40 text-muted-foreground"
+                                            : "cursor-pointer hover:bg-muted text-foreground transition-colors"
                                     }
                                 />
                             </PaginationItem>

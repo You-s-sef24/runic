@@ -28,7 +28,7 @@ export default function CategorySection() {
   return (
     <section className="py-10 sm:py-14">
       <div className="flex items-center justify-between mb-6 sm:mb-8">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-zinc-100 tracking-tight">
           Shop by Category
         </h2>
       </div>
@@ -38,7 +38,7 @@ export default function CategorySection() {
           <Link
             key={category.id}
             href={`/category/${category.id}`}
-            className="group relative h-64 w-full rounded-xl overflow-hidden flex items-center justify-center text-center p-4 border border-gray-100 transition-all duration-300"
+            className="group relative h-64 w-full rounded-xl overflow-hidden flex items-center justify-center text-center p-4 border border-gray-100 dark:border-zinc-800 transition-all duration-300"
           >
             <div className="absolute inset-0 z-0">
               <Image

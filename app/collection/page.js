@@ -51,22 +51,22 @@ export default function AllProductsPage() {
 
     return (
         <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
-            <nav className="flex items-center gap-2 text-xs font-medium text-gray-400 mb-8 tracking-wide uppercase">
-                <Link href="/" className="hover:text-blue-900 transition-colors">Home</Link>
+            <nav className="flex items-center gap-2 text-xs font-medium text-gray-400 dark:text-zinc-500 mb-8 tracking-wide uppercase">
+                <Link href="/" className="hover:text-blue-900 dark:hover:text-zinc-100 transition-colors">Home</Link>
                 <ChevronRight size={12} className="opacity-60" />
-                <span className="text-gray-600 truncate max-w-[180px]">Collection</span>
+                <span className="text-gray-600 dark:text-zinc-400 truncate max-w-[180px]">Collection</span>
             </nav>
 
             <div className="flex items-center justify-between mb-8">
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-zinc-100">
                     Collection
                 </h1>
 
                 <Select value={sortValue} onValueChange={handleSortChange}>
-                    <SelectTrigger className="w-[200px]">
+                    <SelectTrigger className="w-[200px] border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100">
                         <SelectValue placeholder="Sort by" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100">
                         {SORT_OPTIONS.map((option) => (
                             <SelectItem key={option.value} value={option.value}>
                                 {option.label}
@@ -81,25 +81,25 @@ export default function AllProductsPage() {
                     {[...Array(8)].map((_, i) => (
                         <div
                             key={i}
-                            className="rounded-2xl border border-gray-200 p-4 animate-pulse"
+                            className="rounded-2xl border border-gray-200 dark:border-zinc-800 p-4 animate-pulse"
                         >
-                            <div className="aspect-[3/4] mb-4 bg-gray-100 rounded-md" />
-                            <div className="h-3 w-16 bg-gray-100 rounded mb-2" />
-                            <div className="h-4 w-32 bg-gray-100 rounded mb-2" />
-                            <div className="h-4 w-20 bg-gray-100 rounded" />
+                            <div className="aspect-[3/4] mb-4 bg-gray-100 dark:bg-zinc-800/60 rounded-md" />
+                            <div className="h-3 w-16 bg-gray-100 dark:bg-zinc-800/60 rounded mb-2" />
+                            <div className="h-4 w-32 bg-gray-100 dark:bg-zinc-800/60 rounded mb-2" />
+                            <div className="h-4 w-20 bg-gray-100 dark:bg-zinc-800/60 rounded" />
                         </div>
                     ))}
                 </div>
             )}
 
             {isError && (
-                <p className="text-sm text-red-600">
+                <p className="text-sm text-red-600 dark:text-red-400">
                     Failed to load products. Please try again later.
                 </p>
             )}
 
             {!isLoading && !isError && products?.length === 0 && (
-                <p className="text-sm text-gray-500">No products found.</p>
+                <p className="text-sm text-gray-500 dark:text-zinc-400">No products found.</p>
             )}
 
             {!isLoading && !isError && products?.length > 0 && (
@@ -120,14 +120,16 @@ export default function AllProductsPage() {
                                     onClick={() => page > 1 && setPage((p) => p - 1)}
                                     className={
                                         page === 1
-                                            ? "pointer-events-none opacity-40"
-                                            : "cursor-pointer"
+                                            ? "pointer-events-none opacity-40 text-gray-400 dark:text-zinc-600"
+                                            : "cursor-pointer text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-800"
                                     }
                                 />
                             </PaginationItem>
 
                             <PaginationItem>
-                                <PaginationLink isActive>{page}</PaginationLink>
+                                <PaginationLink isActive className="bg-gray-900 dark:bg-zinc-100 text-white dark:text-zinc-950">
+                                    {page}
+                                </PaginationLink>
                             </PaginationItem>
 
                             <PaginationItem>
@@ -137,8 +139,8 @@ export default function AllProductsPage() {
                                     }
                                     className={
                                         !hasNextPage || isPlaceholderData
-                                            ? "pointer-events-none opacity-40"
-                                            : "cursor-pointer"
+                                            ? "pointer-events-none opacity-40 text-gray-400 dark:text-zinc-600"
+                                            : "cursor-pointer text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-800"
                                     }
                                 />
                             </PaginationItem>

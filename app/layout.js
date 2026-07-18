@@ -3,6 +3,7 @@ import "./globals.css";
 import AppSidebar from "@/components/layout/AppSidebar";
 import Providers from "./providers";
 import { Toaster } from "sonner";
+import ThemeInitializer from "@/components/ThemeInitializer";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
         <Providers>
           <AppSidebar />
           <main className="flex-1 min-w-0">
+            <ThemeInitializer />
             {children}
             <Toaster />
           </main>
