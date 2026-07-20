@@ -42,7 +42,7 @@ export default function CategoryProductsPage() {
     const selectedOption = SORT_OPTIONS.find((o) => o.value === sortValue);
     const { sortBy, order } = selectedOption;
 
-    const { data: allProducts, isLoading, isError } = useGetProducts();
+    const { data: allProducts, isLoading, isError } = useGetProducts({ limit: 1000 });
 
     const filteredProducts = (allProducts || [])
         .filter((p) => p.category?.id?.toLowerCase() === category.toLowerCase())
@@ -54,7 +54,7 @@ export default function CategoryProductsPage() {
         });
 
     const totalPages = Math.ceil(filteredProducts.length / PAGE_SIZE) || 1;
-    const paginatedProducts = filteredProducts.slice(
+    const products = filteredProducts.slice(
         (page - 1) * PAGE_SIZE,
         page * PAGE_SIZE
     );
@@ -122,16 +122,16 @@ export default function CategoryProductsPage() {
                 </div>
             )}
 
-            {!isLoading && !isError && filteredProducts.length === 0 && (
+            {!isLoading && !isError && products.length === 0 && (
                 <div className="text-center py-12 border border-dashed border-border rounded-2xl bg-muted/10">
                     <p className="text-sm text-muted-foreground font-medium">{t("categoryProducts.noProducts")}</p>
                 </div>
             )}
 
-            {!isLoading && !isError && filteredProducts.length > 0 && (
+            {!isLoading && !isError && products.length > 0 && (
                 <>
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-                        {paginatedProducts.map((product) => (
+                        {products.map((product) => (
                             <ProductCard product={product} key={product.id} />
                         ))}
                     </div>

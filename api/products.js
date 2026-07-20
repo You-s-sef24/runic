@@ -5,10 +5,10 @@ export async function getFeaturedProducts() {
     return res.data;
 }
 
-export async function getProducts({ page = 1, limit = 8, sortBy, order } = {}) {
+export async function getProducts({ page = 1, limit = 8, sortBy, order, category } = {}) {
     const res = await axios.get(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/products`,
-        { params: { page, limit, sortBy, order } }
+        { params: { page, limit, sortBy, order, category } }
     );
     return res.data;
 }

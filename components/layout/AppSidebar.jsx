@@ -76,9 +76,9 @@ export default function AppSidebar() {
 
       <aside
         className={`fixed md:sticky md:top-0 top-0 start-0 z-50 flex flex-col w-64 h-screen bg-white dark:bg-zinc-900 border-e border-blue-100 dark:border-zinc-800 transition-all duration-200
-          ${isOpen ? "translate-x-0" : "-translate-x-full rtl:translate-x-full"} md:translate-x-0`}
+                    ${isOpen ? "max-md:translate-x-0" : "max-md:-translate-x-full max-md:rtl:translate-x-full"} md:translate-x-0`}
       >
-        <div className="flex items-center justify-between h-16 px-6 border-b border-blue-100 dark:border-zinc-800">
+        <div className="flex items-center justify-between md:justify-center h-16 px-6 border-b border-blue-100 dark:border-zinc-800">
           <Logo width={130} />
           <button
             onClick={() => setIsOpen(false)}

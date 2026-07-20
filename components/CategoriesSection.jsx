@@ -44,6 +44,7 @@ export default function CategorySection() {
               <Image
                 fill
                 unoptimized
+                loading="lazy"
                 src={category.imageUrl}
                 alt={t(`categories.${category.id}`)}
                 className="object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
