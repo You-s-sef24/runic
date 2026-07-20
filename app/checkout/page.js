@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { ChevronRight, ArrowLeft, Truck, ShieldCheck, Minus, Plus } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
@@ -23,34 +24,46 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import ProtectedRoutes from "@/components/ProtectedRoutes";
 
-const EGYPT_GOVERNORATES = [
-    "Cairo", "Giza", "Alexandria", "Qalyubia", "Sharqia", "Dakahlia",
-    "Beheira", "Gharbia", "Monufia", "Kafr El Sheikh", "Damietta",
-    "Port Said", "Ismailia", "Suez", "North Sinai", "South Sinai",
-    "Beni Suef", "Fayoum", "Minya", "Assiut", "Sohag", "Qena",
-    "Luxor", "Aswan", "Red Sea", "New Valley", "Matrouh",
+const GOVERNORATE_KEYS = [
+    "cairo", "giza", "alexandria", "qalyubia", "sharqia", "dakahlia",
+    "beheira", "gharbia", "monufia", "kafrElSheikh", "damietta",
+    "portSaid", "ismailia", "suez", "northSinai", "southSinai",
+    "beniSuef", "fayoum", "minya", "assiut", "sohag", "qena",
+    "luxor", "aswan", "redSea", "newValley", "matrouh",
 ];
+
+const GOVERNORATE_ENGLISH_NAMES = {
+    cairo: "Cairo", giza: "Giza", alexandria: "Alexandria", qalyubia: "Qalyubia",
+    sharqia: "Sharqia", dakahlia: "Dakahlia", beheira: "Beheira", gharbia: "Gharbia",
+    monufia: "Monufia", kafrElSheikh: "Kafr El Sheikh", damietta: "Damietta",
+    portSaid: "Port Said", ismailia: "Ismailia", suez: "Suez", northSinai: "North Sinai",
+    southSinai: "South Sinai", beniSuef: "Beni Suef", fayoum: "Fayoum", minya: "Minya",
+    assiut: "Assiut", sohag: "Sohag", qena: "Qena", luxor: "Luxor", aswan: "Aswan",
+    redSea: "Red Sea", newValley: "New Valley", matrouh: "Matrouh",
+};
 
 const NAIL_PRICE = 2;
 
-const checkoutSchema = z.object({
-    email: z.string().min(1, "Email is required").email("Enter a valid email"),
-    phone: z
-        .string()
-        .min(1, "Phone number is required")
-        .regex(/^01[0125][0-9]{8}$/, "Enter a valid Egyptian phone number (e.g. 01012345678)"),
-    fullName: z.string().min(3, "Full name must be at least 3 characters"),
-    address: z.string().min(5, "Address must be at least 5 characters"),
-    governorate: z.string().min(1, "Please select a governorate"),
-    city: z.string().min(2, "City / district is required"),
-});
-
 export default function CheckoutPage() {
     const router = useRouter();
+    const { t, i18n } = useTranslation();
+    const lang = i18n.language;
     const items = useCartStore((state) => state.cart);
     const clearCart = useCartStore((state) => state.clearCart);
     const user = useAuthStore((state) => state.user);
     const { mutateAsync: createOrder, isPending } = useCreateOrder();
+
+    const checkoutSchema = useMemo(() => z.object({
+        email: z.string().min(1, t("checkout.errors.emailRequired")).email(t("checkout.errors.emailInvalid")),
+        phone: z
+            .string()
+            .min(1, t("checkout.errors.phoneRequired"))
+            .regex(/^01[0125][0-9]{8}$/, t("checkout.errors.phoneInvalid")),
+        fullName: z.string().min(3, t("checkout.errors.fullNameMin")),
+        address: z.string().min(5, t("checkout.errors.addressMin")),
+        governorate: z.string().min(1, t("checkout.errors.governorateRequired")),
+        city: z.string().min(2, t("checkout.errors.cityRequired")),
+    }), [t]);
 
     const [formData, setFormData] = useState({
         email: user?.email || "",
@@ -91,6 +104,13 @@ export default function CheckoutPage() {
         }
     }
 
+    function getItemName(item) {
+        if (typeof item.name === "object") {
+            return item.name?.[lang] || item.name?.en || t("checkout.product");
+        }
+        return item.name || t("checkout.product");
+    }
+
     async function handlePlaceOrder(e) {
         e.preventDefault();
 
@@ -107,6 +127,7 @@ export default function CheckoutPage() {
 
         setErrors({});
 
+        // Store the governorate in English so backend data stays consistent regardless of UI language
         const shippingAddress = `${formData.address}, ${formData.city}, ${formData.governorate}`;
 
         const orderPayload = {
@@ -115,7 +136,7 @@ export default function CheckoutPage() {
             customerEmail: formData.email,
             items: items.map((item) => ({
                 productId: item.id,
-                name: typeof item.name === "object" ? item.name?.en : item.name || "Product",
+                name: getItemName(item),
                 image: item.image,
                 price: item.price,
                 quantity: item.quantity,
@@ -129,11 +150,11 @@ export default function CheckoutPage() {
 
         try {
             await createOrder(orderPayload);
-            toast.success("Order placed successfully!");
+            toast.success(t("checkout.orderSuccess"));
             clearCart();
             router.push("/orders");
         } catch (err) {
-            toast.error("Failed to place order. Please try again.");
+            toast.error(t("checkout.orderError"));
         }
     }
 
@@ -141,9 +162,9 @@ export default function CheckoutPage() {
         return (
             <main className="max-w-4xl mx-auto px-4 py-16 sm:py-24 text-center">
                 <p className="text-sm text-muted-foreground">
-                    Your cart is empty.{" "}
+                    {t("checkout.emptyCart")}{" "}
                     <Link href="/products" className="text-primary font-semibold underline underline-offset-4 hover:opacity-90">
-                        Browse products
+                        {t("checkout.browseProducts")}
                     </Link>
                 </p>
             </main>
@@ -154,11 +175,11 @@ export default function CheckoutPage() {
         <ProtectedRoutes>
             <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-12 text-foreground">
                 <nav className="flex items-center gap-2 text-xs font-medium text-muted-foreground mb-8 tracking-wide uppercase">
-                    <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-                    <ChevronRight size={12} className="opacity-60" />
-                    <Link href="/cart" className="hover:text-primary transition-colors">Cart</Link>
-                    <ChevronRight size={12} className="opacity-60" />
-                    <span className="text-foreground/70">Checkout</span>
+                    <Link href="/" className="hover:text-primary transition-colors">{t("checkout.home")}</Link>
+                    <ChevronRight size={12} className="opacity-60 rtl:rotate-180" />
+                    <Link href="/cart" className="hover:text-primary transition-colors">{t("checkout.cart")}</Link>
+                    <ChevronRight size={12} className="opacity-60 rtl:rotate-180" />
+                    <span className="text-foreground/70">{t("checkout.checkout")}</span>
                 </nav>
 
                 <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
@@ -167,16 +188,16 @@ export default function CheckoutPage() {
                             <CardContent className="p-6 space-y-4">
                                 <h2 className="text-lg font-bold tracking-tight flex items-center gap-2">
                                     <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-xs font-bold">1</span>
-                                    Contact Information
+                                    {t("checkout.contactInfo")}
                                 </h2>
                                 <div className="grid sm:grid-cols-2 gap-4">
                                     <div className="space-y-1.5">
-                                        <Label htmlFor="email">Email Address</Label>
+                                        <Label htmlFor="email">{t("checkout.emailAddress")}</Label>
                                         <Input type="email" id="email" value={formData.email} onChange={handleChange} placeholder="name@email.com" className="bg-background border-input" />
                                         {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
                                     </div>
                                     <div className="space-y-1.5">
-                                        <Label htmlFor="phone">Phone Number</Label>
+                                        <Label htmlFor="phone">{t("checkout.phoneNumber")}</Label>
                                         <Input type="tel" id="phone" value={formData.phone} onChange={handleChange} placeholder="01012345678" className="bg-background border-input" />
                                         {errors.phone && <p className="text-xs text-destructive mt-1">{errors.phone}</p>}
                                     </div>
@@ -188,38 +209,40 @@ export default function CheckoutPage() {
                             <CardContent className="p-6 space-y-4">
                                 <h2 className="text-lg font-bold tracking-tight flex items-center gap-2">
                                     <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-xs font-bold">2</span>
-                                    Shipping Address
+                                    {t("checkout.shippingAddress")}
                                 </h2>
 
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="fullName">Full Name</Label>
+                                    <Label htmlFor="fullName">{t("checkout.fullName")}</Label>
                                     <Input type="text" id="fullName" value={formData.fullName} onChange={handleChange} placeholder="Youssef Ahmed" className="bg-background border-input" />
                                     {errors.fullName && <p className="text-xs text-destructive mt-1">{errors.fullName}</p>}
                                 </div>
 
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="address">Street Address</Label>
+                                    <Label htmlFor="address">{t("checkout.streetAddress")}</Label>
                                     <Input type="text" id="address" value={formData.address} onChange={handleChange} placeholder="123 El Nasr Street, Building 4, Apt 12" className="bg-background border-input" />
                                     {errors.address && <p className="text-xs text-destructive mt-1">{errors.address}</p>}
                                 </div>
 
                                 <div className="grid sm:grid-cols-2 gap-4">
                                     <div className="space-y-1.5">
-                                        <Label htmlFor="governorate">Governorate</Label>
+                                        <Label htmlFor="governorate">{t("checkout.governorate")}</Label>
                                         <Select value={formData.governorate} onValueChange={handleGovernorateChange}>
                                             <SelectTrigger id="governorate" className="w-full bg-background border-input">
-                                                <SelectValue placeholder="Select governorate" />
+                                                <SelectValue placeholder={t("checkout.selectGovernorate")} />
                                             </SelectTrigger>
                                             <SelectContent className="bg-popover border-border text-popover-foreground">
-                                                {EGYPT_GOVERNORATES.map((gov) => (
-                                                    <SelectItem key={gov} value={gov}>{gov}</SelectItem>
+                                                {GOVERNORATE_KEYS.map((key) => (
+                                                    <SelectItem key={key} value={GOVERNORATE_ENGLISH_NAMES[key]}>
+                                                        {t(`checkout.governorates.${key}`)}
+                                                    </SelectItem>
                                                 ))}
                                             </SelectContent>
                                         </Select>
                                         {errors.governorate && <p className="text-xs text-destructive mt-1">{errors.governorate}</p>}
                                     </div>
                                     <div className="space-y-1.5">
-                                        <Label htmlFor="city">City / District</Label>
+                                        <Label htmlFor="city">{t("checkout.cityDistrict")}</Label>
                                         <Input type="text" id="city" value={formData.city} onChange={handleChange} placeholder="Nasr City" className="bg-background border-input" />
                                         {errors.city && <p className="text-xs text-destructive mt-1">{errors.city}</p>}
                                     </div>
@@ -231,15 +254,15 @@ export default function CheckoutPage() {
                             <CardContent className="p-6 space-y-4">
                                 <h2 className="text-lg font-bold tracking-tight flex items-center gap-2">
                                     <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-xs font-bold">3</span>
-                                    Payment Method
+                                    {t("checkout.paymentMethod")}
                                 </h2>
 
                                 <div className="flex items-start gap-3 p-4 bg-primary/5 border border-primary/10 rounded-xl">
                                     <Truck className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" strokeWidth={1.5} />
                                     <div>
-                                        <p className="text-sm font-semibold">Cash on Delivery</p>
+                                        <p className="text-sm font-semibold">{t("checkout.cashOnDelivery")}</p>
                                         <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                                            Pay in cash when your order arrives at your doorstep. No card details needed.
+                                            {t("checkout.cashOnDeliveryDesc")}
                                         </p>
                                     </div>
                                 </div>
@@ -251,7 +274,7 @@ export default function CheckoutPage() {
                         <Card className="bg-muted/30 border-border text-card-foreground">
                             <CardContent className="p-6 lg:p-8">
                                 <h2 className="text-lg font-bold tracking-tight pb-4 border-b border-border">
-                                    Review Order
+                                    {t("checkout.reviewOrder")}
                                 </h2>
 
                                 <div className="divide-y divide-border max-h-[240px] overflow-y-auto">
@@ -260,7 +283,7 @@ export default function CheckoutPage() {
                                             <div className="relative w-14 h-14 bg-background border border-border rounded-lg flex items-center justify-center flex-shrink-0">
                                                 <Image
                                                     src={item.image || "/placeholder.png"}
-                                                    alt={typeof item.name === "object" ? item.name?.en : item.name || "Product"}
+                                                    alt={getItemName(item)}
                                                     fill
                                                     unoptimized
                                                     sizes="56px"
@@ -269,10 +292,10 @@ export default function CheckoutPage() {
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <h3 className="text-sm font-bold truncate">
-                                                    {typeof item.name === "object" ? item.name?.en : item.name || "Product"}
+                                                    {getItemName(item)}
                                                 </h3>
                                                 <p className="text-xs text-muted-foreground mt-0.5">
-                                                    Qty: {item.quantity} {item.dimensions && `• ${item.dimensions}`}
+                                                    {t("checkout.qty")}: {item.quantity} {item.dimensions && `• ${item.dimensions}`}
                                                 </p>
                                             </div>
                                             <span className="text-sm font-bold flex-shrink-0">
@@ -284,8 +307,8 @@ export default function CheckoutPage() {
 
                                 <div className="py-4 border-b border-border flex items-center justify-between">
                                     <div>
-                                        <p className="text-sm font-semibold">Add Nails</p>
-                                        <p className="text-xs text-muted-foreground mt-0.5">${NAIL_PRICE.toFixed(2)} each</p>
+                                        <p className="text-sm font-semibold">{t("checkout.addNails")}</p>
+                                        <p className="text-xs text-muted-foreground mt-0.5">${NAIL_PRICE.toFixed(2)} {t("checkout.each")}</p>
                                     </div>
                                     <div className="flex items-center gap-3 bg-background border border-border rounded-lg px-2.5 py-1">
                                         <button
@@ -293,7 +316,7 @@ export default function CheckoutPage() {
                                             onClick={() => setNails((n) => Math.max(0, n - 1))}
                                             disabled={nails <= 0}
                                             className="text-muted-foreground hover:text-primary p-0.5 transition-colors disabled:opacity-30 cursor-pointer"
-                                            aria-label="Decrease nails"
+                                            aria-label={t("checkout.decreaseNails")}
                                         >
                                             <Minus className="w-3.5 h-3.5" />
                                         </button>
@@ -304,7 +327,7 @@ export default function CheckoutPage() {
                                             type="button"
                                             onClick={() => setNails((n) => n + 1)}
                                             className="text-muted-foreground hover:text-primary p-0.5 transition-colors cursor-pointer"
-                                            aria-label="Increase nails"
+                                            aria-label={t("checkout.increaseNails")}
                                         >
                                             <Plus className="w-3.5 h-3.5" />
                                         </button>
@@ -313,14 +336,14 @@ export default function CheckoutPage() {
 
                                 <div className="py-6 border-b border-border text-sm font-medium space-y-3">
                                     <div className="flex justify-between text-muted-foreground">
-                                        <span>Subtotal</span>
+                                        <span>{t("checkout.subtotal")}</span>
                                         <span className="text-foreground">${subtotal.toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between text-muted-foreground">
-                                        <span>Shipping</span>
+                                        <span>{t("checkout.shipping")}</span>
                                         <span>
                                             {shipping === 0 ? (
-                                                <span className="text-emerald-600 dark:text-emerald-500 font-semibold uppercase tracking-wider text-xs">Free</span>
+                                                <span className="text-emerald-600 dark:text-emerald-500 font-semibold uppercase tracking-wider text-xs">{t("checkout.free")}</span>
                                             ) : (
                                                 `$${shipping.toFixed(2)}`
                                             )}
@@ -328,14 +351,14 @@ export default function CheckoutPage() {
                                     </div>
                                     {nails > 0 && (
                                         <div className="flex justify-between text-muted-foreground">
-                                            <span>Nails ({nails})</span>
+                                            <span>{t("checkout.nails")} ({nails})</span>
                                             <span className="text-foreground">${nailsFee.toFixed(2)}</span>
                                         </div>
                                     )}
                                 </div>
 
                                 <div className="py-6 flex justify-between items-center">
-                                    <span className="text-base font-bold">Total Due</span>
+                                    <span className="text-base font-bold">{t("checkout.totalDue")}</span>
                                     <span className="text-2xl font-extrabold text-primary tracking-tight">
                                         ${total.toFixed(2)}
                                     </span>
@@ -347,7 +370,7 @@ export default function CheckoutPage() {
                                     disabled={isPending}
                                     className="w-full bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98] rounded-xl py-3.5 text-sm font-semibold tracking-wide transition-all duration-200 cursor-pointer shadow-lg shadow-primary/10 disabled:opacity-60"
                                 >
-                                    {isPending ? "Placing order..." : "Place Order"}
+                                    {isPending ? t("checkout.placingOrder") : t("checkout.placeOrder")}
                                 </Button>
                             </CardContent>
                         </Card>
@@ -355,9 +378,9 @@ export default function CheckoutPage() {
                         <div className="flex items-start gap-3 px-4 py-3 bg-muted/20 border border-border rounded-xl">
                             <ShieldCheck className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" strokeWidth={1.5} />
                             <div className="space-y-0.5">
-                                <p className="text-xs font-semibold uppercase tracking-wider">Runic Buyer Promise</p>
+                                <p className="text-xs font-semibold uppercase tracking-wider">{t("checkout.buyerPromiseTitle")}</p>
                                 <p className="text-[11px] text-muted-foreground leading-normal">
-                                    Enjoy zero-risk checkout with safe transit and full-value package insurance.
+                                    {t("checkout.buyerPromiseDesc")}
                                 </p>
                             </div>
                         </div>
@@ -367,8 +390,8 @@ export default function CheckoutPage() {
                                 href="/cart"
                                 className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider"
                             >
-                                <ArrowLeft className="w-3.5 h-3.5" />
-                                Return to Cart
+                                <ArrowLeft className="w-3.5 h-3.5 rtl:rotate-180" />
+                                {t("checkout.returnToCart")}
                             </Link>
                         </div>
                     </div>

@@ -5,11 +5,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Eye, EyeOff, Lock, Mail, User, Phone, ArrowRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { signUpSchema } from "@/lib/validation/auth";
 import { registerUser } from "@/api/auth";
 import { useAuthStore } from "@/store/authStore";
 
 export default function SignUpPage() {
+    const { t } = useTranslation();
     const router = useRouter();
     const setUser = useAuthStore((state) => state.setUser);
 
@@ -43,10 +45,10 @@ export default function SignUpPage() {
         try {
             const user = await registerUser({ name, email, phone, password });
             setUser(user);
-            toast.success(`Account created successfully! Welcome, ${user.name}`);
+            toast.success(`${t("auth.accountCreated")} ${user.name}`);
             router.push("/");
         } catch (err) {
-            toast.error(err.message || "Something went wrong");
+            toast.error(err.message || t("auth.somethingWentWrong"));
         } finally {
             setIsLoading(false);
         }
@@ -63,19 +65,19 @@ export default function SignUpPage() {
                         Runic
                     </Link>
                     <p className="text-sm text-gray-500 dark:text-zinc-400">
-                        Begin building your curated space
+                        {t("auth.signUpTagline")}
                     </p>
                 </div>
 
                 <div className="bg-white dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800 rounded-2xl p-6 sm:p-8 shadow-xs">
                     <h2 className="text-lg font-bold text-gray-900 dark:text-zinc-100 tracking-tight mb-6">
-                        Create Your Account
+                        {t("auth.signUpTitle")}
                     </h2>
 
                     <form onSubmit={handleSignUp} className="space-y-4" noValidate>
                         <div className="space-y-1.5">
                             <label htmlFor="name" className="text-xs font-semibold text-gray-500 dark:text-zinc-400 uppercase tracking-wider">
-                                Full Name
+                                {t("auth.fullName")}
                             </label>
                             <div className="relative">
                                 <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-zinc-500" />
@@ -95,7 +97,7 @@ export default function SignUpPage() {
 
                         <div className="space-y-1.5">
                             <label htmlFor="email" className="text-xs font-semibold text-gray-500 dark:text-zinc-400 uppercase tracking-wider">
-                                Email Address
+                                {t("auth.emailAddress")}
                             </label>
                             <div className="relative">
                                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-zinc-500" />
@@ -115,7 +117,7 @@ export default function SignUpPage() {
 
                         <div className="space-y-1.5">
                             <label htmlFor="phone" className="text-xs font-semibold text-gray-500 dark:text-zinc-400 uppercase tracking-wider">
-                                Phone Number
+                                {t("auth.phoneNumber")}
                             </label>
                             <div className="relative">
                                 <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-zinc-500" />
@@ -135,7 +137,7 @@ export default function SignUpPage() {
 
                         <div className="space-y-1.5">
                             <label htmlFor="password" className="text-xs font-semibold text-gray-500 dark:text-zinc-400 uppercase tracking-wider">
-                                Password
+                                {t("auth.password")}
                             </label>
                             <div className="relative">
                                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-zinc-500" />
@@ -145,7 +147,7 @@ export default function SignUpPage() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     className="w-full pl-10 pr-10 py-2.5 bg-zinc-50 dark:bg-zinc-800/40 border border-gray-100 dark:border-zinc-800 rounded-lg text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:border-blue-900/50 dark:focus:border-zinc-700 focus:bg-white dark:focus:bg-zinc-900 transition-all"
-                                    placeholder="Create password"
+                                    placeholder={t("auth.createPassword")}
                                 />
                                 <button
                                     type="button"
@@ -162,7 +164,7 @@ export default function SignUpPage() {
 
                         <div className="space-y-1.5">
                             <label htmlFor="confirmPassword" className="text-xs font-semibold text-gray-500 dark:text-zinc-400 uppercase tracking-wider">
-                                Confirm Password
+                                {t("auth.confirmPassword")}
                             </label>
                             <div className="relative">
                                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-zinc-500" />
@@ -172,7 +174,7 @@ export default function SignUpPage() {
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 dark:bg-zinc-800/40 border border-gray-100 dark:border-zinc-800 rounded-lg text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:border-blue-900/50 dark:focus:border-zinc-700 focus:bg-white dark:focus:bg-zinc-900 transition-all"
-                                    placeholder="Confirm password"
+                                    placeholder={t("auth.confirmPasswordPlaceholder")}
                                 />
                             </div>
                             {errors.confirmPassword && (
@@ -185,15 +187,15 @@ export default function SignUpPage() {
                             disabled={isLoading}
                             className="w-full mt-2 flex items-center justify-center gap-2 bg-blue-900 hover:bg-blue-950 dark:bg-blue-700 dark:hover:bg-blue-600 active:scale-[0.98] text-white rounded-xl py-3 text-sm font-semibold tracking-wide transition-all duration-200 cursor-pointer shadow-lg shadow-blue-900/15 dark:shadow-none disabled:opacity-60 disabled:cursor-not-allowed"
                         >
-                            {isLoading ? "Creating account..." : "Create Account"}
+                            {isLoading ? t("auth.creatingAccount") : t("auth.createAccount")}
                             {!isLoading && <ArrowRight className="w-4 h-4" />}
                         </button>
                     </form>
 
                     <p className="text-center text-xs text-gray-500 dark:text-zinc-400 mt-6">
-                        Already have an account?{" "}
+                        {t("auth.haveAccount")}{" "}
                         <Link href="/sign-in" className="font-bold text-blue-900 dark:text-blue-400 hover:text-blue-950 dark:hover:text-blue-300 underline transition-colors">
-                            Sign In
+                            {t("nav.signIn")}
                         </Link>
                     </p>
                 </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import ProductCard from "@/components/ProductCard";
 import useGetProducts from "@/hooks/products/useGetProducts";
 import {
@@ -25,18 +26,21 @@ import { useParams } from "next/navigation";
 const PAGE_SIZE = 8;
 
 const SORT_OPTIONS = [
-    { value: "Newest", label: "Newest", sortBy: "id", order: "desc" },
-    { value: "Price: Low to High", label: "Price: Low to High", sortBy: "price", order: "asc" },
-    { value: "Price: High to Low", label: "Price: High to Low", sortBy: "price", order: "desc" },
+    { value: "newest", labelKey: "categoryProducts.sortOptions.newest", sortBy: "id", order: "desc" },
+    { value: "priceLowToHigh", labelKey: "categoryProducts.sortOptions.priceLowToHigh", sortBy: "price", order: "asc" },
+    { value: "priceHighToLow", labelKey: "categoryProducts.sortOptions.priceHighToLow", sortBy: "price", order: "desc" },
 ];
 
 export default function CategoryProductsPage() {
     const { category } = useParams();
+    const { t, i18n } = useTranslation();
+    const lang = i18n.language;
 
     const [page, setPage] = useState(1);
-    const [sortValue, setSortValue] = useState("Newest");
+    const [sortValue, setSortValue] = useState("newest");
 
-    const { sortBy, order } = SORT_OPTIONS.find((o) => o.value === sortValue);
+    const selectedOption = SORT_OPTIONS.find((o) => o.value === sortValue);
+    const { sortBy, order } = selectedOption;
 
     const { data: allProducts, isLoading, isError } = useGetProducts();
 
@@ -61,19 +65,18 @@ export default function CategoryProductsPage() {
     }
 
     const categoryTitle =
+        filteredProducts[0]?.category?.[lang] ||
         filteredProducts[0]?.category?.en ||
         category.charAt(0).toUpperCase() + category.slice(1);
 
     return (
         <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14 text-foreground">
-            {/* Breadcrumb Navigation */}
             <nav className="flex items-center gap-2 text-xs font-medium text-muted-foreground mb-8 tracking-wide uppercase">
-                <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-                <ChevronRight size={12} className="opacity-60" />
+                <Link href="/" className="hover:text-primary transition-colors">{t("categoryProducts.home")}</Link>
+                <ChevronRight size={12} className="opacity-60 rtl:rotate-180" />
                 <span className="text-foreground/70 truncate max-w-[180px]">{categoryTitle}</span>
             </nav>
 
-            {/* Header Toolbar */}
             <div className="flex items-center justify-between mb-8 gap-4">
                 <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
                     {categoryTitle}
@@ -81,19 +84,20 @@ export default function CategoryProductsPage() {
 
                 <Select value={sortValue} onValueChange={handleSortChange}>
                     <SelectTrigger className="w-[200px] bg-background border-input text-foreground">
-                        <SelectValue placeholder="Sort by" />
+                        <SelectValue placeholder={t("categoryProducts.sortBy")}>
+                            {t(selectedOption.labelKey)}
+                        </SelectValue>
                     </SelectTrigger>
                     <SelectContent className="bg-popover border-border text-popover-foreground">
                         {SORT_OPTIONS.map((option) => (
                             <SelectItem key={option.value} value={option.value}>
-                                {option.label}
+                                {t(option.labelKey)}
                             </SelectItem>
                         ))}
                     </SelectContent>
                 </Select>
             </div>
 
-            {/* Loading Skeleton Grid */}
             {isLoading && (
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
                     {[...Array(PAGE_SIZE)].map((_, i) => (
@@ -110,23 +114,20 @@ export default function CategoryProductsPage() {
                 </div>
             )}
 
-            {/* Error state */}
             {isError && (
                 <div className="p-6 bg-destructive/5 border border-destructive/10 rounded-2xl">
                     <p className="text-sm text-destructive font-medium">
-                        Failed to load products for this category. Please try again later.
+                        {t("categoryProducts.error")}
                     </p>
                 </div>
             )}
 
-            {/* Empty state */}
             {!isLoading && !isError && filteredProducts.length === 0 && (
                 <div className="text-center py-12 border border-dashed border-border rounded-2xl bg-muted/10">
-                    <p className="text-sm text-muted-foreground font-medium">No products found in this category.</p>
+                    <p className="text-sm text-muted-foreground font-medium">{t("categoryProducts.noProducts")}</p>
                 </div>
             )}
 
-            {/* Main Products Grid & Pagination */}
             {!isLoading && !isError && filteredProducts.length > 0 && (
                 <>
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
@@ -139,6 +140,7 @@ export default function CategoryProductsPage() {
                         <PaginationContent>
                             <PaginationItem>
                                 <PaginationPrevious
+                                    text={t("categoryProducts.pagination.previous")}
                                     onClick={() => page > 1 && setPage((p) => p - 1)}
                                     className={
                                         page === 1
@@ -162,6 +164,7 @@ export default function CategoryProductsPage() {
 
                             <PaginationItem>
                                 <PaginationNext
+                                    text={t("categoryProducts.pagination.next")}
                                     onClick={() => page < totalPages && setPage((p) => p + 1)}
                                     className={
                                         page === totalPages

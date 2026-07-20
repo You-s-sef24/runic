@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import ProductCard from "@/components/ProductCard";
 import useGetProducts from "@/hooks/products/useGetProducts";
 import {
@@ -23,17 +24,16 @@ import { ChevronRight } from "lucide-react";
 
 const PAGE_SIZE = 8;
 
-const SORT_OPTIONS = [
-    { value: "Newest", label: "Newest", sortBy: "id", order: "desc" },
-    { value: "Price: Low to High", label: "Price: Low to High", sortBy: "price", order: "asc" },
-    { value: "Price: High to Low", label: "Price: High to Low", sortBy: "price", order: "desc" },
-];
-
 export default function AllProductsPage() {
+    const { t } = useTranslation();
+    const SORT_OPTIONS = [
+        { value: `${t(`collection.sortOptions.newest`)}`, labelKey: "collection.sortOptions.newest", sortBy: "id", order: "desc" },
+        { value: `${t(`collection.sortOptions.priceLowToHigh`)}`, labelKey: "collection.sortOptions.priceLowToHigh", sortBy: "price", order: "asc" },
+        { value: `${t(`collection.sortOptions.priceHighToLow`)}`, labelKey: "collection.sortOptions.priceHighToLow", sortBy: "price", order: "desc" },
+    ];
     const [page, setPage] = useState(1);
-    const [sortValue, setSortValue] = useState("Newest");
-
-    const { sortBy, order } = SORT_OPTIONS.find((o) => o.value === sortValue);
+    const [sortValue, setSortValue] = useState(`${t(`collection.sortOptions.newest`)}`);
+    const { sortBy, order } = SORT_OPTIONS.find((o) => o.value === sortValue) || SORT_OPTIONS[0];
 
     const { data: products, isLoading, isError, isPlaceholderData } = useGetProducts({
         page,
@@ -52,24 +52,28 @@ export default function AllProductsPage() {
     return (
         <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
             <nav className="flex items-center gap-2 text-xs font-medium text-gray-400 dark:text-zinc-500 mb-8 tracking-wide uppercase">
-                <Link href="/" className="hover:text-blue-900 dark:hover:text-zinc-100 transition-colors">Home</Link>
-                <ChevronRight size={12} className="opacity-60" />
-                <span className="text-gray-600 dark:text-zinc-400 truncate max-w-[180px]">Collection</span>
+                <Link href="/" className="hover:text-blue-900 dark:hover:text-zinc-100 transition-colors">
+                    {t("collection.home")}
+                </Link>
+                <ChevronRight size={12} className="opacity-60 rtl:rotate-180" />
+                <span className="text-gray-600 dark:text-zinc-400 truncate max-w-[180px]">
+                    {t("collection.title")}
+                </span>
             </nav>
 
             <div className="flex items-center justify-between mb-8">
                 <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-zinc-100">
-                    Collection
+                    {t("collection.title")}
                 </h1>
 
-                <Select value={sortValue} onValueChange={handleSortChange}>
+                <Select value={t(`${sortValue}`)} onValueChange={handleSortChange}>
                     <SelectTrigger className="w-[200px] border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100">
-                        <SelectValue placeholder="Sort by" />
+                        <SelectValue placeholder={t("collection.sortBy")} />
                     </SelectTrigger>
                     <SelectContent className="border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100">
                         {SORT_OPTIONS.map((option) => (
                             <SelectItem key={option.value} value={option.value}>
-                                {option.label}
+                                {t(option.labelKey)}
                             </SelectItem>
                         ))}
                     </SelectContent>
@@ -94,12 +98,14 @@ export default function AllProductsPage() {
 
             {isError && (
                 <p className="text-sm text-red-600 dark:text-red-400">
-                    Failed to load products. Please try again later.
+                    {t("collection.error")}
                 </p>
             )}
 
             {!isLoading && !isError && products?.length === 0 && (
-                <p className="text-sm text-gray-500 dark:text-zinc-400">No products found.</p>
+                <p className="text-sm text-gray-500 dark:text-zinc-400">
+                    {t("collection.noProducts")}
+                </p>
             )}
 
             {!isLoading && !isError && products?.length > 0 && (
@@ -117,6 +123,7 @@ export default function AllProductsPage() {
                         <PaginationContent>
                             <PaginationItem>
                                 <PaginationPrevious
+                                    text={t("collection.pagination.previous")}
                                     onClick={() => page > 1 && setPage((p) => p - 1)}
                                     className={
                                         page === 1
@@ -134,6 +141,7 @@ export default function AllProductsPage() {
 
                             <PaginationItem>
                                 <PaginationNext
+                                    text={t("collection.pagination.next")}
                                     onClick={() =>
                                         hasNextPage && !isPlaceholderData && setPage((p) => p + 1)
                                     }

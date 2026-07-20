@@ -6,8 +6,12 @@ import { toast } from "sonner";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "@base-ui/react";
 import { useCartStore } from "@/store/cartStore";
+import { useLanguageStore } from "@/store/langStore";
+import { useTranslation } from "react-i18next";
 
 export default function ProductCard({ product }) {
+  const { t } = useTranslation();
+  const lang = useLanguageStore((s) => s.language);
   const { image, name, price, dimensions, id, category } = product;
   const addToCart = useCartStore((state) => state.addToCart);
 
@@ -15,7 +19,7 @@ export default function ProductCard({ product }) {
     e.preventDefault();
     e.stopPropagation();
     addToCart(product);
-    toast.success("Added to your cart");
+    toast.success(t("cart.addedToCart"));
   }
 
   return (
@@ -33,7 +37,7 @@ export default function ProductCard({ product }) {
 
           {dimensions && (
             <span className="absolute top-3 left-3 text-[10px] font-semibold tracking-widest text-zinc-500 dark:text-zinc-400 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md px-2.5 py-1 rounded border border-zinc-200/50 dark:border-zinc-800 uppercase">
-              {dimensions} in
+              {dimensions} {t("card.in")}
             </span>
           )}
         </div>
@@ -41,12 +45,12 @@ export default function ProductCard({ product }) {
         <div className="flex flex-col flex-1 p-4">
           {category && (
             <span className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-1.5 block">
-              {category.en}
+              {lang === "en" ? category.en : category.ar}
             </span>
           )}
 
           <h3 className="font-medium text-zinc-800 dark:text-zinc-200 text-[15px] tracking-tight line-clamp-1 leading-snug group-hover:text-zinc-600 dark:group-hover:text-zinc-400 transition-colors duration-300">
-            {name.en}
+            {lang === "en" ? name.en : name.ar}
           </h3>
 
           <div className="mt-1">
@@ -60,7 +64,7 @@ export default function ProductCard({ product }) {
             className="mt-4 w-full flex items-center justify-center gap-2 bg-blue-900 hover:bg-blue-950 dark:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-lg py-2.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-sm cursor-pointer"
           >
             <ShoppingCart className="w-3.5 h-3.5 stroke-[2]" />
-            Add to Cart
+            {t("card.addToCart")}
           </Button>
         </div>
       </div>

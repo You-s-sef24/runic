@@ -1,22 +1,24 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import { Button } from "./ui/button";
 import ProductCard from "./ProductCard";
 import useGetFeaturedProducts from "@/hooks/products/useGetFeaturedProducts";
 
 export default function FeaturedProducts() {
+  const { t } = useTranslation();
   const { data: products, isLoading, isError } = useGetFeaturedProducts();
 
   return (
     <section className="py-10 sm:py-14">
       <div className="flex items-center justify-between mb-6 sm:mb-8">
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-zinc-100 tracking-tight">
-          Featured Collection
+          {t("featuredProducts.title")}
         </h2>
         <Link href="/collection">
           <Button className="bg-blue-900 hover:bg-blue-950 dark:bg-blue-700 dark:hover:bg-blue-600 text-white cursor-pointer">
-            See All Collection
+            {t("featuredProducts.seeAll")}
           </Button>
         </Link>
       </div>
@@ -39,7 +41,7 @@ export default function FeaturedProducts() {
 
       {isError && (
         <p className="text-sm text-red-600 dark:text-red-400">
-          Failed to load products. Please try again later.
+          {t("featuredProducts.error")}
         </p>
       )}
 

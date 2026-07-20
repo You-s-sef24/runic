@@ -17,9 +17,11 @@ import {
 import { useAuthStore } from "@/store/authStore";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
+import Logo from "./Logo";
+import { useTranslation } from "react-i18next";
 
 export default function AppSidebar() {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const user = useAuthStore((s) => s.user);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
@@ -28,12 +30,17 @@ export default function AppSidebar() {
   const pathname = usePathname();
 
   const navItems = [
-    { to: "/", label: "Home", icon: HomeIcon },
-    { to: "/collection", label: "Collection", icon: FrameIcon },
-    { to: "/cart", label: "Cart", icon: ShoppingCart },
-    { to: "/orders", label: "Orders", icon: Package, authOnly: true },
-    { to: "/about", label: "About", icon: Info },
-    { to: "/settings", label: "Settings", icon: Settings, authOnly: true },
+    { to: "/", label: t("nav.home"), icon: HomeIcon },
+    { to: "/collection", label: t("nav.collection"), icon: FrameIcon },
+    { to: "/cart", label: t("nav.cart"), icon: ShoppingCart },
+    { to: "/orders", label: t("nav.orders"), icon: Package, authOnly: true },
+    { to: "/about", label: t("nav.about"), icon: Info },
+    {
+      to: "/settings",
+      label: t("nav.settings"),
+      icon: Settings,
+      authOnly: true,
+    },
   ];
 
   const visibleNavItems = navItems.filter(
@@ -56,13 +63,7 @@ export default function AppSidebar() {
         >
           <Menu size={22} />
         </button>
-        <Image
-          alt="Runic"
-          src="/logo.png"
-          width={180}
-          height={80}
-          className="object-contain"
-        />
+        <Logo width={110} />
         <div className="w-[22px]" />
       </header>
 
@@ -78,13 +79,7 @@ export default function AppSidebar() {
           ${isOpen ? "translate-x-0" : "-translate-x-full rtl:translate-x-full"} md:translate-x-0`}
       >
         <div className="flex items-center justify-between h-16 px-6 border-b border-blue-100 dark:border-zinc-800">
-          <Image
-            alt="Runic"
-            src="/logo.png"
-            width={180}
-            height={80}
-            className="object-contain"
-          />
+          <Logo width={130} />
           <button
             onClick={() => setIsOpen(false)}
             className="md:hidden text-blue-900 dark:text-zinc-400 hover:opacity-80"
@@ -142,7 +137,7 @@ export default function AppSidebar() {
                 className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors cursor-pointer"
               >
                 <LogOut size={18} />
-                Logout
+                {t("nav.logout")}
               </button>
             </>
           ) : (
@@ -153,7 +148,7 @@ export default function AppSidebar() {
                 className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm font-medium text-blue-900 dark:text-zinc-200 bg-blue-50/60 dark:bg-zinc-800 hover:bg-blue-100/70 dark:hover:bg-zinc-700/60 transition-colors"
               >
                 <LogIn size={18} />
-                Sign In
+                {t("nav.signIn")}
               </Link>
               <Link
                 href="/sign-up"
@@ -161,7 +156,7 @@ export default function AppSidebar() {
                 className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-zinc-400 hover:bg-blue-50/50 dark:hover:bg-zinc-800/50 transition-colors"
               >
                 <UserPlus size={18} />
-                Sign Up
+                {t("nav.signUp")}
               </Link>
             </div>
           )}

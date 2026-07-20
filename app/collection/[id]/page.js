@@ -5,19 +5,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
 import { ShoppingCart, ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import useGetProduct from "@/hooks/products/useGetProduct";
 import { useCartStore } from "@/store/cartStore";
 
 export default function ProductDetailsPage() {
     const { id } = useParams();
+    const { t, i18n } = useTranslation();
     const { data: product, isLoading, isError } = useGetProduct(id);
     const addToCart = useCartStore((state) => state.addToCart);
+    const lang = i18n.language;
 
     function handleAddToCart(e) {
         e.preventDefault();
         e.stopPropagation();
         addToCart(product);
-        toast.success("Added to your cart");
+        toast.success(t("productDetails.addedToCart"));
     }
 
     if (isLoading) {
@@ -43,7 +46,7 @@ export default function ProductDetailsPage() {
             <main className="max-w-6xl mx-auto px-4 sm:px-6 py-16 text-center">
                 <div className="max-w-md mx-auto p-8 rounded-2xl border border-red-100 dark:border-red-900/30 bg-red-50/50 dark:bg-red-950/10">
                     <p className="text-sm font-medium text-red-600 dark:text-red-400">
-                        Failed to load this product. Please try again later.
+                        {t("productDetails.loadError")}
                     </p>
                 </div>
             </main>
@@ -51,16 +54,19 @@ export default function ProductDetailsPage() {
     }
 
     const { image, name, price, dimensions, desc, category } = product;
+    const localizedName = name?.[lang] || name?.en;
+    const localizedDesc = desc?.[lang] || desc?.en;
+    const localizedCategory = category?.[lang] || category?.en;
 
     return (
         <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
 
             <nav className="flex items-center gap-2 text-xs font-medium text-gray-400 dark:text-zinc-500 mb-8 tracking-wide uppercase">
-                <Link href="/" className="hover:text-blue-900 dark:hover:text-zinc-100 transition-colors">Home</Link>
-                <ChevronRight size={12} className="opacity-60" />
-                <Link href="/collection" className="hover:text-blue-900 dark:hover:text-zinc-100 transition-colors">Collection</Link>
-                <ChevronRight size={12} className="opacity-60" />
-                <span className="text-gray-600 dark:text-zinc-400 truncate max-w-[180px]">{name?.en}</span>
+                <Link href="/" className="hover:text-blue-900 dark:hover:text-zinc-100 transition-colors">{t("productDetails.home")}</Link>
+                <ChevronRight size={12} className="opacity-60 rtl:rotate-180" />
+                <Link href="/collection" className="hover:text-blue-900 dark:hover:text-zinc-100 transition-colors">{t("productDetails.collection")}</Link>
+                <ChevronRight size={12} className="opacity-60 rtl:rotate-180" />
+                <span className="text-gray-600 dark:text-zinc-400 truncate max-w-[180px]">{localizedName}</span>
             </nav>
 
             <div className="grid md:grid-cols-12 gap-8 lg:gap-16 items-center">
@@ -69,7 +75,7 @@ export default function ProductDetailsPage() {
                     <div className="relative w-full max-w-[500px] aspect-square flex items-center justify-center">
                         <Image
                             src={image || "/placeholder.png"}
-                            alt={name?.en || "Product image"}
+                            alt={localizedName || t("productDetails.imageAlt")}
                             fill
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 500px"
                             className="object-contain w-full h-full rounded-xl drop-shadow-[0_12px_32px_rgba(0,0,0,0.08)] dark:drop-shadow-[0_12px_32px_rgba(0,0,0,0.4)] hover:scale-[1.02] transition-transform duration-500 ease-out"
@@ -82,7 +88,7 @@ export default function ProductDetailsPage() {
 
                     <div className="pb-6 border-b border-gray-100 dark:border-zinc-800">
                         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-zinc-100 tracking-tight leading-tight">
-                            {name?.en}
+                            {localizedName}
                         </h1>
                         <p className="mt-3 text-2xl font-extrabold text-blue-900 dark:text-blue-400 tracking-tight">
                             ${Number(price ?? 0).toFixed(2)}
@@ -92,19 +98,19 @@ export default function ProductDetailsPage() {
                     <div className="py-6 space-y-5">
                         {desc && (
                             <p className="text-sm sm:text-base text-gray-600 dark:text-zinc-400 leading-relaxed">
-                                {desc.en}
+                                {localizedDesc}
                             </p>
                         )}
 
                         {dimensions && (
                             <div className="flex items-center gap-2">
                                 <div className="inline-flex flex-col bg-zinc-50 dark:bg-zinc-900/50 border border-gray-100/85 dark:border-zinc-800 rounded-lg px-4 py-2.5 self-start">
-                                    <span className="text-[10px] text-gray-400 dark:text-zinc-500 uppercase tracking-wider mb-0.5">Frame Size</span>
-                                    <span className="text-sm text-gray-900 dark:text-zinc-100 font-semibold">{dimensions} in</span>
+                                    <span className="text-[10px] text-gray-400 dark:text-zinc-500 uppercase tracking-wider mb-0.5">{t("productDetails.frameSize")}</span>
+                                    <span className="text-sm text-gray-900 dark:text-zinc-100 font-semibold">{dimensions} {t("productDetails.inches")}</span>
                                 </div>
                                 <div className="inline-flex flex-col bg-zinc-50 dark:bg-zinc-900/50 border border-gray-100/85 dark:border-zinc-800 rounded-lg px-4 py-2.5 self-start">
-                                    <span className="text-[10px] text-gray-400 dark:text-zinc-500 uppercase tracking-wider mb-0.5">Category</span>
-                                    <span className="text-sm text-gray-900 dark:text-zinc-100 font-semibold">{category?.en}</span>
+                                    <span className="text-[10px] text-gray-400 dark:text-zinc-500 uppercase tracking-wider mb-0.5">{t("productDetails.category")}</span>
+                                    <span className="text-sm text-gray-900 dark:text-zinc-100 font-semibold">{localizedCategory}</span>
                                 </div>
                             </div>
                         )}
@@ -116,7 +122,7 @@ export default function ProductDetailsPage() {
                             className="w-full flex items-center justify-center gap-2.5 bg-blue-900 hover:bg-blue-950 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-950 rounded-xl py-3.5 text-sm font-semibold tracking-wide transition-all duration-200 cursor-pointer shadow-lg shadow-blue-900/15 dark:shadow-none active:scale-[0.98]"
                         >
                             <ShoppingCart className="w-4 h-4" />
-                            Add to Cart
+                            {t("productDetails.addToCart")}
                         </button>
                     </div>
 

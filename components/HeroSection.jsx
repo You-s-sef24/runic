@@ -1,7 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 export default function HeroSection() {
+  const { t } = useTranslation();
+
   return (
     <div className="relative overflow-hidden rounded-2xl bg-blue-800 dark:bg-zinc-900 transition-colors duration-300">
       <div className="absolute inset-0">
@@ -17,22 +22,24 @@ export default function HeroSection() {
 
       <div className="relative flex flex-col items-center text-center px-6 sm:px-10 py-16 sm:py-24">
         <span className="text-blue-300 dark:text-blue-400 text-xs sm:text-sm font-semibold tracking-widest uppercase mb-3">
-          New Arrivals
+          {t("home.newArrivals")}
         </span>
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight max-w-2xl leading-tight">
-          Every Portrait Deserves the Right Frame
+          {t("home.heroTitle")}
         </h1>
         <p className="mt-4 text-sm sm:text-base text-blue-100/80 dark:text-zinc-300/90 max-w-md leading-relaxed">
-          Discover handpicked frames, boards, and decor pieces crafted to turn
-          your favorite moments into lasting displays — delivered anywhere in
-          Egypt.
+          {t("home.heroSubtitle")}
         </p>
         <div className="mt-7 flex items-center gap-3">
           <Link
             href="/collection"
             className="inline-flex items-center justify-center rounded-lg border border-white/40 dark:border-zinc-700 bg-transparent px-6 py-3 text-sm font-semibold text-white dark:text-zinc-200 transition-all hover:bg-white/10 dark:hover:bg-zinc-800/50 cursor-pointer"
           >
-            View Collection
+            {
+              t(
+                "home.viewCollection",
+              )
+            }
           </Link>
         </div>
       </div>
