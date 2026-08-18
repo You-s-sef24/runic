@@ -8,11 +8,13 @@ import { Button } from "@base-ui/react";
 import { useCartStore } from "@/store/cartStore";
 import { useLanguageStore } from "@/store/langStore";
 import { useTranslation } from "react-i18next";
+import { getProductImages } from "@/utils/product";
 
 export default function ProductCard({ product }) {
   const { t } = useTranslation();
   const lang = useLanguageStore((s) => s.language);
-  const { image, name, price, dimensions, id, category } = product;
+  const { name, price, dimensions, id, category, featured } = product;
+  const [thumbnail] = getProductImages(product);
   const addToCart = useCartStore((state) => state.addToCart);
 
   function handleAddToCart(e) {
@@ -27,8 +29,8 @@ export default function ProductCard({ product }) {
       <div className="flex flex-col w-full h-full rounded-xl border border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 overflow-hidden transition-all duration-500 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
         <div className="relative aspect-[4/5] bg-zinc-50 dark:bg-zinc-900/20 flex items-center justify-center overflow-hidden">
           <Image
-            src={image || "/placeholder.png"}
-            alt={name.en}
+            src={thumbnail || "/placeholder.png"}
+            alt={lang === "en" ? name.en : name.ar}
             fill
             loading="lazy"
             unoptimized
@@ -37,8 +39,14 @@ export default function ProductCard({ product }) {
           />
 
           {dimensions && (
-            <span className="absolute top-3 left-3 text-[10px] font-semibold tracking-widest text-zinc-500 dark:text-zinc-400 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md px-2.5 py-1 rounded border border-zinc-200/50 dark:border-zinc-800 uppercase">
+            <span className="absolute top-3 left-3 text-[10px] font-semibold tracking-widest text-zinc-500 dark:text-zinc-400 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md px-2.5 py-1 rounded border border-zinc-200/50 dark:border-zinc-800 uppercase z-10">
               {dimensions} {t("card.in")}
+            </span>
+          )}
+
+          {featured && (
+            <span className="absolute top-3 right-3 text-[10px] font-semibold tracking-widest text-white bg-zinc-900/90 dark:bg-zinc-100 dark:text-zinc-950 backdrop-blur-md px-2.5 py-1 rounded border border-zinc-800/20 dark:border-zinc-200/20 uppercase shadow-sm z-10">
+              {t("card.featured")}
             </span>
           )}
         </div>

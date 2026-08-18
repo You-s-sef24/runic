@@ -79,7 +79,8 @@ const ar = {
     "card": {
         "addToCart": "أضف الي السلة",
         "in": "بوصة",
-        "addedToCart": "تمت الإضافة إلى سلتك"
+        "addedToCart": "تمت الإضافة إلى سلتك",
+        "featured": "مميزة"
     },
     "auth": {
         "signUpTagline": "ابدأ ببناء مساحتك المميزة",
@@ -150,7 +151,8 @@ const ar = {
         "inches": "بوصة",
         "category": "الفئة",
         "addToCart": "أضف إلى السلة",
-        "addedToCart": "تمت الإضافة إلى سلتك"
+        "addedToCart": "تمت الإضافة إلى سلتك",
+        "featured": "مميزة"
     },
     "cart": {
         "product": "منتج",

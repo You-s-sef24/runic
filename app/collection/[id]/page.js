@@ -1,13 +1,14 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
 import { ShoppingCart, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import useGetProduct from "@/hooks/products/useGetProduct";
 import { useCartStore } from "@/store/cartStore";
+import { getProductImages } from "@/utils/product";
+import ProductImageCarousel from "@/components/ProductImageCarousel";
 
 export default function ProductDetailsPage() {
     const { id } = useParams();
@@ -53,10 +54,11 @@ export default function ProductDetailsPage() {
         );
     }
 
-    const { image, name, price, dimensions, desc, category } = product;
+    const { name, price, dimensions, desc, category, featured } = product;
     const localizedName = name?.[lang] || name?.en;
     const localizedDesc = desc?.[lang] || desc?.en;
     const localizedCategory = category?.[lang] || category?.en;
+    const images = getProductImages(product);
 
     return (
         <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
@@ -71,17 +73,16 @@ export default function ProductDetailsPage() {
 
             <div className="grid md:grid-cols-12 gap-8 lg:gap-16 items-center">
 
-                <div className="md:col-span-6 flex justify-center">
-                    <div className="relative w-full max-w-[500px] aspect-square flex items-center justify-center">
-                        <Image
-                            src={image || "/placeholder.png"}
-                            alt={localizedName || t("productDetails.imageAlt")}
-                            fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 500px"
-                            className="object-contain w-full h-full rounded-xl drop-shadow-[0_12px_32px_rgba(0,0,0,0.08)] dark:drop-shadow-[0_12px_32px_rgba(0,0,0,0.4)] hover:scale-[1.02] transition-transform duration-500 ease-out"
-                            priority
-                        />
-                    </div>
+                <div className="md:col-span-6 flex justify-center relative">
+                    {featured && (
+                        <span className="absolute top-3 right-3 z-10 px-3 py-1 bg-black/80 dark:bg-zinc-100/90 backdrop-blur-md text-white dark:text-zinc-950 text-[11px] font-semibold tracking-wider uppercase rounded-md shadow-sm">
+                            {t("productDetails.featured")}
+                        </span>
+                    )}
+                    <ProductImageCarousel
+                        images={images}
+                        alt={localizedName || t("productDetails.imageAlt")}
+                    />
                 </div>
 
                 <div className="md:col-span-6 flex flex-col justify-center">

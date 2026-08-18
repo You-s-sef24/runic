@@ -80,7 +80,8 @@ const en = {
     "card": {
         "addToCart": "Add To Cart",
         "in": "CM",
-        "addedToCart": "Added to your cart"
+        "addedToCart": "Added to your cart",
+        "featured": "Featured"
     },
     "auth": {
         "signUpTagline": "Begin building your curated space",
@@ -151,7 +152,8 @@ const en = {
         "inches": "in",
         "category": "Category",
         "addToCart": "Add to Cart",
-        "addedToCart": "Added to your cart"
+        "addedToCart": "Added to your cart",
+        "featured": "Featured"
     },
     "cart": {
         "product": "Product",
