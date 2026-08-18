@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function getFeaturedProducts() {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/products`)
-    return res.data;
+    return res.data.filter((p) => p.featured === true);
 }
 
 export async function getProducts({ page = 1, limit = 8, sortBy, order, category } = {}) {

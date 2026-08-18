@@ -49,7 +49,8 @@ const en = {
     "bestsellerProducts": {
         "title": "Bestsellers",
         "seeAll": "See All",
-        "error": "Failed to load bestseller products."
+        "error": "Failed to load bestseller products.",
+        "empty": "No bestsellers to show yet.",
     },
     "categories": {
         "accessories": "3D Accessories",
@@ -58,7 +59,8 @@ const en = {
     "featuredProducts": {
         "title": "Featured Collection",
         "seeAll": "See All Collection",
-        "error": "Failed to load products. Please try again later."
+        "error": "Failed to load products. Please try again later.",
+        "empty": "No featured products right now."
     },
     "features": {
         "heading": "Experience Streamlined Shopping With Runic",

@@ -38,9 +38,15 @@ export default function BestsellerSection() {
         </p>
       )}
 
-      {!isLoading && !isError && (
+      {!isLoading && !isError && products?.length === 0 && (
+        <p className="text-sm text-gray-500 dark:text-zinc-400">
+          {t("bestsellerProducts.empty")}
+        </p>
+      )}
+
+      {!isLoading && !isError && products?.length > 0 && (
         <div className="grid sm:grid-cols-3 gap-4 sm:gap-6">
-          {products?.slice(0, 3).map((product) => (
+          {products.slice(0, 3).map((product) => (
             <ProductCard product={product} key={product.id} />
           ))}
         </div>

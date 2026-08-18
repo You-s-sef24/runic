@@ -1,8 +1,6 @@
 "use client";
 
-import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { Button } from "./ui/button";
 import ProductCard from "./ProductCard";
 import useGetFeaturedProducts from "@/hooks/products/useGetFeaturedProducts";
 
@@ -16,11 +14,6 @@ export default function FeaturedProducts() {
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-zinc-100 tracking-tight">
           {t("featuredProducts.title")}
         </h2>
-        <Link href="/collection">
-          <Button className="bg-blue-900 hover:bg-blue-950 dark:bg-blue-700 dark:hover:bg-blue-600 text-white cursor-pointer">
-            {t("featuredProducts.seeAll")}
-          </Button>
-        </Link>
       </div>
 
       {isLoading && (
@@ -45,9 +38,15 @@ export default function FeaturedProducts() {
         </p>
       )}
 
-      {!isLoading && !isError && (
+      {!isLoading && !isError && products?.length === 0 && (
+        <p className="text-sm text-gray-500 dark:text-zinc-400">
+          {t("featuredProducts.empty")}
+        </p>
+      )}
+
+      {!isLoading && !isError && products?.length > 0 && (
         <div className="grid sm:grid-cols-3 gap-4 sm:gap-6">
-          {products?.slice(0, 3).map((product) => (
+          {products.slice(0, 3).map((product) => (
             <ProductCard product={product} key={product.id} />
           ))}
         </div>
