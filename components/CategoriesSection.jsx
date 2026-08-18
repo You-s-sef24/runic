@@ -6,20 +6,15 @@ import { useTranslation } from "react-i18next";
 
 const CATEGORIES = [
   {
-    id: "frames",
+    id: "accessories",
     imageUrl:
       "https://res.cloudinary.com/dz0ylot2a/image/upload/v1784163246/hwrjidlslv2ufdqlgsds.png",
   },
   {
-    id: "decorations",
+    id: "acrylic",
     imageUrl:
       "https://res.cloudinary.com/dz0ylot2a/image/upload/v1784163085/w5kth2vdbtw92xj4kpot.png",
-  },
-  {
-    id: "boards",
-    imageUrl:
-      "https://res.cloudinary.com/dz0ylot2a/image/upload/v1784029520/jgy8qbhgmd2mrw0xazne.jpg",
-  },
+  }
 ];
 
 export default function CategorySection() {
