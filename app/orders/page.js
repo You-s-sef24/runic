@@ -104,7 +104,7 @@ export default function OrdersPage() {
                                         <div>
                                             {t("orders.total")}{" "}
                                             <strong className="text-zinc-950 dark:text-zinc-100 text-sm font-bold">
-                                                ${order.total.toFixed(2)}
+                                                {order.total.toFixed(2)} L.E.
                                             </strong>
                                         </div>
 
@@ -147,7 +147,7 @@ export default function OrdersPage() {
                                                             <span className="w-1 h-1 rounded-full bg-zinc-300 dark:bg-zinc-700" />
                                                             <span>
                                                                 {t("orders.unitPrice")}{" "}
-                                                                <strong className="text-zinc-700 dark:text-zinc-300">${item.price.toFixed(2)}</strong>
+                                                                <strong className="text-zinc-700 dark:text-zinc-300">{item.price.toFixed(2)} L.E.</strong>
                                                             </span>
                                                         </div>
                                                     </div>

@@ -56,7 +56,7 @@ export default function ProductCard({ product }) {
 
           <div className="mt-1">
             <span className="font-semibold text-zinc-950 dark:text-zinc-100 text-base tracking-tight">
-              ${price?.toFixed(2)}
+              {price?.toFixed(2)} L.E.
             </span>
           </div>
 

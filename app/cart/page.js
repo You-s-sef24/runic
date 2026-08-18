@@ -143,7 +143,7 @@ export default function CartPage() {
 
                                     <div className="flex items-center gap-4">
                                         <span className="sm:hidden text-sm font-bold text-gray-900 dark:text-zinc-100">
-                                            ${(item.price * item.quantity).toFixed(2)}
+                                            {(item.price * item.quantity).toFixed(2)} L.E.
                                         </span>
                                         <button
                                             onClick={() => handleRemove(item.id, getItemName(item))}
@@ -185,7 +185,7 @@ export default function CartPage() {
                                         {t("cart.free")}
                                     </span>
                                 ) : (
-                                    `$${shipping.toFixed(2)}`
+                                    `${shipping.toFixed(2)} L.E.`
                                 )}
                             </span>
                         </div>

@@ -127,7 +127,6 @@ export default function CheckoutPage() {
 
         setErrors({});
 
-        // Store the governorate in English so backend data stays consistent regardless of UI language
         const shippingAddress = `${formData.address}, ${formData.city}, ${formData.governorate}`;
 
         const orderPayload = {
@@ -299,7 +298,7 @@ export default function CheckoutPage() {
                                                 </p>
                                             </div>
                                             <span className="text-sm font-bold flex-shrink-0">
-                                                ${(item.price * item.quantity).toFixed(2)}
+                                                {(item.price * item.quantity).toFixed(2)} L.E.
                                             </span>
                                         </div>
                                     ))}
@@ -308,7 +307,7 @@ export default function CheckoutPage() {
                                 <div className="py-4 border-b border-border flex items-center justify-between">
                                     <div>
                                         <p className="text-sm font-semibold">{t("checkout.addNails")}</p>
-                                        <p className="text-xs text-muted-foreground mt-0.5">${NAIL_PRICE.toFixed(2)} {t("checkout.each")}</p>
+                                        <p className="text-xs text-muted-foreground mt-0.5">{NAIL_PRICE.toFixed(2)} L.E. {t("checkout.each")}</p>
                                     </div>
                                     <div className="flex items-center gap-3 bg-background border border-border rounded-lg px-2.5 py-1">
                                         <button
@@ -337,7 +336,7 @@ export default function CheckoutPage() {
                                 <div className="py-6 border-b border-border text-sm font-medium space-y-3">
                                     <div className="flex justify-between text-muted-foreground">
                                         <span>{t("checkout.subtotal")}</span>
-                                        <span className="text-foreground">${subtotal.toFixed(2)}</span>
+                                        <span className="text-foreground">{subtotal.toFixed(2)} L.E.</span>
                                     </div>
                                     <div className="flex justify-between text-muted-foreground">
                                         <span>{t("checkout.shipping")}</span>
@@ -345,14 +344,14 @@ export default function CheckoutPage() {
                                             {shipping === 0 ? (
                                                 <span className="text-emerald-600 dark:text-emerald-500 font-semibold uppercase tracking-wider text-xs">{t("checkout.free")}</span>
                                             ) : (
-                                                `$${shipping.toFixed(2)}`
+                                                `${shipping.toFixed(2)} L.E.` 
                                             )}
                                         </span>
                                     </div>
                                     {nails > 0 && (
                                         <div className="flex justify-between text-muted-foreground">
                                             <span>{t("checkout.nails")} ({nails})</span>
-                                            <span className="text-foreground">${nailsFee.toFixed(2)}</span>
+                                            <span className="text-foreground">{nailsFee.toFixed(2)} L.E.</span>
                                         </div>
                                     )}
                                 </div>
@@ -360,7 +359,7 @@ export default function CheckoutPage() {
                                 <div className="py-6 flex justify-between items-center">
                                     <span className="text-base font-bold">{t("checkout.totalDue")}</span>
                                     <span className="text-2xl font-extrabold text-primary tracking-tight">
-                                        ${total.toFixed(2)}
+                                        {total.toFixed(2)} L.E.
                                     </span>
                                 </div>
 

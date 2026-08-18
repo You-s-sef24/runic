@@ -91,7 +91,7 @@ export default function ProductDetailsPage() {
                             {localizedName}
                         </h1>
                         <p className="mt-3 text-2xl font-extrabold text-blue-900 dark:text-blue-400 tracking-tight">
-                            ${Number(price ?? 0).toFixed(2)}
+                            {Number(price ?? 0).toFixed(2)} L.E.
                         </p>
                     </div>
 
