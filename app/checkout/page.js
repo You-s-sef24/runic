@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
-import { ChevronRight, ArrowLeft, Truck, ShieldCheck, Minus, Plus } from "lucide-react";
+import { ChevronRight, ArrowLeft, Truck, ShieldCheck } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import { useAuthStore } from "@/store/authStore";
 import useCreateOrder from "@/hooks/orders/useCreateOrder";
@@ -42,13 +42,14 @@ const GOVERNORATE_ENGLISH_NAMES = {
     redSea: "Red Sea", newValley: "New Valley", matrouh: "Matrouh",
 };
 
-const NAIL_PRICE = 2;
+const NAIL_PRICE = 15;
 
 export default function CheckoutPage() {
     const router = useRouter();
     const { t, i18n } = useTranslation();
     const lang = i18n.language;
     const items = useCartStore((state) => state.cart);
+    const nails = useCartStore((state) => state.nails);
     const clearCart = useCartStore((state) => state.clearCart);
     const user = useAuthStore((state) => state.user);
     const { mutateAsync: createOrder, isPending } = useCreateOrder();
@@ -74,7 +75,6 @@ export default function CheckoutPage() {
         city: "",
     });
     const [errors, setErrors] = useState({});
-    const [nails, setNails] = useState(0);
 
     const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const shipping = subtotal > 150 ? 0 : 15.0;
@@ -136,10 +136,11 @@ export default function CheckoutPage() {
             items: items.map((item) => ({
                 productId: item.id,
                 name: getItemName(item),
-                image: item.image,
+                images: item.images,
                 price: item.price,
                 quantity: item.quantity,
             })),
+            shipping: Number(shipping.toFixed(2)),
             total: Number(total.toFixed(2)),
             shippingAddress,
             status: "pending",
@@ -281,7 +282,7 @@ export default function CheckoutPage() {
                                         <div key={item.id} className="flex items-center gap-4 py-4 first:pt-4 last:pb-0">
                                             <div className="relative w-14 h-14 bg-background border border-border rounded-lg flex items-center justify-center flex-shrink-0">
                                                 <Image
-                                                    src={item.image || "/placeholder.png"}
+                                                    src={item.images?.[0] || "/placeholder.png"}
                                                     alt={getItemName(item)}
                                                     fill
                                                     unoptimized
@@ -304,35 +305,6 @@ export default function CheckoutPage() {
                                     ))}
                                 </div>
 
-                                <div className="py-4 border-b border-border flex items-center justify-between">
-                                    <div>
-                                        <p className="text-sm font-semibold">{t("checkout.addNails")}</p>
-                                        <p className="text-xs text-muted-foreground mt-0.5">{NAIL_PRICE.toFixed(2)} L.E. {t("checkout.each")}</p>
-                                    </div>
-                                    <div className="flex items-center gap-3 bg-background border border-border rounded-lg px-2.5 py-1">
-                                        <button
-                                            type="button"
-                                            onClick={() => setNails((n) => Math.max(0, n - 1))}
-                                            disabled={nails <= 0}
-                                            className="text-muted-foreground hover:text-primary p-0.5 transition-colors disabled:opacity-30 cursor-pointer"
-                                            aria-label={t("checkout.decreaseNails")}
-                                        >
-                                            <Minus className="w-3.5 h-3.5" />
-                                        </button>
-                                        <span className="text-sm font-semibold w-4 text-center select-none">
-                                            {nails}
-                                        </span>
-                                        <button
-                                            type="button"
-                                            onClick={() => setNails((n) => n + 1)}
-                                            className="text-muted-foreground hover:text-primary p-0.5 transition-colors cursor-pointer"
-                                            aria-label={t("checkout.increaseNails")}
-                                        >
-                                            <Plus className="w-3.5 h-3.5" />
-                                        </button>
-                                    </div>
-                                </div>
-
                                 <div className="py-6 border-b border-border text-sm font-medium space-y-3">
                                     <div className="flex justify-between text-muted-foreground">
                                         <span>{t("checkout.subtotal")}</span>
@@ -344,7 +316,7 @@ export default function CheckoutPage() {
                                             {shipping === 0 ? (
                                                 <span className="text-emerald-600 dark:text-emerald-500 font-semibold uppercase tracking-wider text-xs">{t("checkout.free")}</span>
                                             ) : (
-                                                `${shipping.toFixed(2)} L.E.` 
+                                                `${shipping.toFixed(2)} L.E.`
                                             )}
                                         </span>
                                     </div>

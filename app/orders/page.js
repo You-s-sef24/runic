@@ -9,6 +9,7 @@ import { useAuthStore } from "@/store/authStore";
 import { useLanguageStore } from "@/store/langStore";
 import useGetOrders from "@/hooks/orders/useGetOrders";
 import ProtectedRoutes from "@/components/ProtectedRoutes";
+import { calculateOrderTotal } from "@/lib/calculateOrderTotal";
 
 const STATUS_CONFIG = {
     pending: {
@@ -104,7 +105,7 @@ export default function OrdersPage() {
                                         <div>
                                             {t("orders.total")}{" "}
                                             <strong className="text-zinc-950 dark:text-zinc-100 text-sm font-bold">
-                                                {order.total.toFixed(2)} L.E.
+                                                {calculateOrderTotal(order).toFixed(2)} L.E.
                                             </strong>
                                         </div>
 
@@ -127,7 +128,7 @@ export default function OrdersPage() {
                                                 <div key={`${order.id}-${i}`} className="p-5 flex items-start gap-4">
                                                     <div className="relative w-16 h-20 rounded bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800 flex-shrink-0 overflow-hidden">
                                                         <Image
-                                                            src={item.image || "/placeholder.png"}
+                                                            src={item.images?.[0] || "/placeholder.png"}
                                                             alt={itemName || "Product"}
                                                             fill
                                                             unoptimized

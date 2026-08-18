@@ -175,7 +175,12 @@ const en = {
         "free": "Free",
         "total": "Total",
         "freeShippingNotice": "Add ${{amount}} more for free shipping",
-        "proceedToCheckout": "Proceed to Checkout"
+        "proceedToCheckout": "Proceed to Checkout",
+        "addNails": "Add Nails",
+        "each": "each",
+        "nails": "Nails",
+        "decreaseNails": "Decrease nails",
+        "increaseNails": "Increase nails"
     },
     "checkout": {
         "home": "Home",

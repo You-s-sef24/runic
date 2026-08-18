@@ -174,7 +174,12 @@ const ar = {
         "free": "مجاني",
         "total": "الإجمالي",
         "freeShippingNotice": "أضف {{amount}}$ أخرى للحصول على شحن مجاني",
-        "proceedToCheckout": "المتابعة للدفع"
+        "proceedToCheckout": "المتابعة للدفع",
+        "addNails": "إضافة مسامير",
+        "each": "لكل واحد",
+        "nails": "مسامير",
+        "decreaseNails": "تقليل المسامير",
+        "increaseNails": "زيادة المسامير"
     },
     "checkout": {
         "home": "الرئيسية",

@@ -9,6 +9,10 @@ import { useCartStore } from "@/store/cartStore";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 
+const NAIL_PRICE = 15;
+const FREE_SHIPPING_THRESHOLD = 200;
+const SHIPPING_FEE = 15.0;
+
 export default function CartPage() {
     const router = useRouter();
     const { t, i18n } = useTranslation();
@@ -16,6 +20,8 @@ export default function CartPage() {
     const cartItems = useCartStore((state) => state.cart);
     const updateQuantity = useCartStore((state) => state.updateQuantity);
     const removeFromCart = useCartStore((state) => state.removeFromCart);
+    const nails = useCartStore((state) => state.nails);
+    const setNails = useCartStore((state) => state.setNails);
     const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
     function getItemName(item) {
@@ -43,8 +49,10 @@ export default function CartPage() {
     }
 
     const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    const shipping = subtotal > 150 ? 0 : 15.0;
-    const total = subtotal + shipping;
+    const nailsFee = nails * NAIL_PRICE;
+    const preShippingTotal = subtotal + nailsFee;
+    const shipping = preShippingTotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
+    const total = preShippingTotal + shipping;
 
     if (cartItems.length === 0) {
         return (
@@ -92,7 +100,7 @@ export default function CartPage() {
                         >
                             <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 bg-zinc-50 dark:bg-zinc-900 rounded-lg flex items-center justify-center">
                                 <Image
-                                    src={item.image || "/placeholder.png"}
+                                    src={item.images?.[0] || "/placeholder.png"}
                                     alt={getItemName(item)}
                                     fill
                                     unoptimized
@@ -172,11 +180,46 @@ export default function CartPage() {
                         {t("cart.orderSummary")}
                     </h2>
 
+                    <div className="py-4 border-b border-gray-100 dark:border-zinc-800 flex items-center justify-between">
+                        <div>
+                            <p className="text-sm font-semibold text-gray-900 dark:text-zinc-100">{t("cart.addNails")}</p>
+                            <p className="text-xs text-gray-500 dark:text-zinc-400 mt-0.5">{NAIL_PRICE.toFixed(2)} L.E. {t("cart.each")}</p>
+                        </div>
+                        <div className="flex items-center gap-3 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 rounded-lg px-2.5 py-1">
+                            <button
+                                type="button"
+                                onClick={() => setNails(nails - 1)}
+                                disabled={nails <= 0}
+                                className="text-gray-500 dark:text-zinc-400 hover:text-blue-900 dark:hover:text-zinc-100 p-0.5 transition-colors disabled:opacity-30 cursor-pointer"
+                                aria-label={t("cart.decreaseNails")}
+                            >
+                                <Minus className="w-3.5 h-3.5" />
+                            </button>
+                            <span className="text-sm font-semibold text-gray-800 dark:text-zinc-200 w-4 text-center select-none">
+                                {nails}
+                            </span>
+                            <button
+                                type="button"
+                                onClick={() => setNails(nails + 1)}
+                                className="text-gray-500 dark:text-zinc-400 hover:text-blue-900 dark:hover:text-zinc-100 p-0.5 transition-colors cursor-pointer"
+                                aria-label={t("cart.increaseNails")}
+                            >
+                                <Plus className="w-3.5 h-3.5" />
+                            </button>
+                        </div>
+                    </div>
+
                     <div className="py-6 space-y-4 border-b border-gray-100 dark:border-zinc-800 text-sm font-medium">
                         <div className="flex justify-between text-gray-500 dark:text-zinc-400">
                             <span>{t("cart.subtotal")}</span>
                             <span className="text-gray-950 dark:text-zinc-100">${subtotal.toFixed(2)}</span>
                         </div>
+                        {nails > 0 && (
+                            <div className="flex justify-between text-gray-500 dark:text-zinc-400">
+                                <span>{t("cart.nails")} ({nails})</span>
+                                <span className="text-gray-950 dark:text-zinc-100">{nailsFee.toFixed(2)} L.E.</span>
+                            </div>
+                        )}
                         <div className="flex justify-between text-gray-500 dark:text-zinc-400">
                             <span>{t("cart.shipping")}</span>
                             <span className="text-gray-950 dark:text-zinc-100">
@@ -199,7 +242,7 @@ export default function CartPage() {
                             </span>
                             {shipping > 0 && (
                                 <p className="text-[10px] text-gray-400 dark:text-zinc-500 mt-1 font-medium">
-                                    {t("cart.freeShippingNotice", { amount: (150 - subtotal).toFixed(2) })}
+                                    {t("cart.freeShippingNotice", { amount: (FREE_SHIPPING_THRESHOLD - preShippingTotal).toFixed(2) })}
                                 </p>
                             )}
                         </div>

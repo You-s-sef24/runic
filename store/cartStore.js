@@ -5,6 +5,7 @@ export const useCartStore = create(
     persist(
         (set, get) => ({
             cart: [],
+            nails: 0,
 
             addToCart: (product) =>
                 set((state) => {
@@ -35,7 +36,9 @@ export const useCartStore = create(
                     ),
                 })),
 
-            clearCart: () => set({ cart: [] }),
+            setNails: (nails) => set({ nails: Math.max(0, nails) }),
+
+            clearCart: () => set({ cart: [], nails: 0 }),
 
             getTotalItems: () => get().cart.reduce((sum, item) => sum + item.quantity, 0),
 
