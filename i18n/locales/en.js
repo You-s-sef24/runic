@@ -46,10 +46,14 @@ const en = {
         "shopByCategory": "Shop by Category",
 
     },
+    "bestsellerProducts": {
+        "title": "Bestsellers",
+        "seeAll": "See All",
+        "error": "Failed to load bestseller products."
+    },
     "categories": {
-        "frames": "Frames",
-        "decorations": "Decorations",
-        "boards": "Boards"
+        "accessories": "3D Accessories",
+        "acrylic": "Acrylic Signs & Designs",
     },
     "featuredProducts": {
         "title": "Featured Collection",

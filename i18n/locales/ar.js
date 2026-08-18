@@ -45,10 +45,14 @@ const ar = {
         "viewCollection": "عرض المجموعة",
         "shopByCategory": "تسوق حسب الفئة"
     },
+    "bestsellerProducts": {
+        "title": "الأكثر مبيعًا",
+        "seeAll": "عرض الكل",
+        "error": "فشل تحميل المنتجات الأكثر مبيعًا."
+    },
     "categories": {
-        "frames": "إطارات",
-        "decorations": "ديكورات",
-        "boards": "لوحات"
+        "accessories": "إكسسوارات ثلاثية الأبعاد",
+        "acrylic": "لافتات وتصاميم من الأكريليك",
     },
     "featuredProducts": {
         "title": "المجموعة المميزة",
