@@ -3,6 +3,8 @@
 import { useTranslation } from "react-i18next";
 import ProductCard from "./ProductCard";
 import useGetBestseller from "@/hooks/products/useGetBestSeller";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function BestsellerSection() {
   const { t } = useTranslation();
@@ -14,6 +16,13 @@ export default function BestsellerSection() {
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-zinc-100 tracking-tight">
           {t("bestsellerProducts.title")}
         </h2>
+        <Link
+          href="/bestsellers"
+          className="group inline-flex items-center gap-1.5 text-sm font-semibold text-blue-950 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
+        >
+          {t("bestsellers.viewAll")}
+          <ArrowRight className="w-4 h-4 rtl:rotate-180 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />
+        </Link>
       </div>
 
       {isLoading && (
