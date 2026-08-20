@@ -67,17 +67,17 @@ const en = {
     },
     "features": {
         "heading": "Experience Streamlined Shopping With Runic",
-        "freeDelivery": {
-            "title": "Free Delivery",
-            "description": "Complimentary standard shipping on all orders, delivered straight to your door with premium tracking."
+        "delivery": {
+            "title": "Delivery Across Egypt",
+            "description": "We deliver to every corner of Egypt, bringing your Runic order straight to your doorstep with reliable and convenient shipping."
         },
-        "inStorePickup": {
-            "title": "In-Store Pickup",
-            "description": "Order online and collect your items from your nearest boutique in as little as two hours."
+        "madeByRunic": {
+            "title": "Made by Runic",
+            "description": "Every product is designed, manufactured, and produced from scratch by Runic, ensuring exceptional quality and attention to every detail."
         },
-        "extendedWarranty": {
-            "title": "Extended Warranty",
-            "description": "Every purchase is backed by our comprehensive warranty coverage to guarantee absolute peace of mind."
+        "satisfaction": {
+            "title": "Your Satisfaction Matters",
+            "description": "Your complete satisfaction is our top priority. We're committed to delivering products and experiences that meet your expectations every time."
         }
     },
     "card": {
@@ -153,7 +153,7 @@ const en = {
         "subtitle": "Our most-loved pieces, ranked by real customer orders.",
         "error": "Failed to load bestsellers. Please try again.",
         "noProducts": "No bestsellers yet — check back soon.",
-        "viewAll":"View All"
+        "viewAll": "View All"
     },
     "productDetails": {
         "home": "Home",

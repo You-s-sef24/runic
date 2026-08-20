@@ -1,6 +1,6 @@
 "use client";
 
-import { PackageOpen, Store, ShieldCheck } from "lucide-react";
+import { Truck, Factory, HeartHandshake } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export default function StreamlinedShopping() {
@@ -8,22 +8,22 @@ export default function StreamlinedShopping() {
 
   const features = [
     {
-      id: "free-delivery",
-      icon: PackageOpen,
-      title: t("features.freeDelivery.title"),
-      description: t("features.freeDelivery.description"),
+      id: "delivery",
+      icon: Truck,
+      title: t("features.delivery.title"),
+      description: t("features.delivery.description"),
     },
     {
-      id: "self-pickup",
-      icon: Store,
-      title: t("features.inStorePickup.title"),
-      description: t("features.inStorePickup.description"),
+      id: "madeByRunic",
+      icon: Factory,
+      title: t("features.madeByRunic.title"),
+      description: t("features.madeByRunic.description"),
     },
     {
-      id: "warranty",
-      icon: ShieldCheck,
-      title: t("features.extendedWarranty.title"),
-      description: t("features.extendedWarranty.description"),
+      id: "satisfaction",
+      icon: HeartHandshake,
+      title: t("features.satisfaction.title"),
+      description: t("features.satisfaction.description"),
     },
   ];
 
