@@ -40,11 +40,11 @@ const en = {
     },
     "home": {
         "newArrivals": "New Arrivals",
-        "heroTitle": "Every Portrait Deserves the Right Frame",
-        "heroSubtitle": "Discover handpicked frames, boards, and decor pieces crafted to turn your favorite moments into lasting displays — delivered anywhere in Egypt.",
-        "viewCollection": "View Collection",
-        "shopByCategory": "Shop by Category",
-
+        "heroTitleLine1": "Elevate",
+        "heroTitleLine2": "Your Space.",
+        "heroSubtitle": "Premium frames, automotive shelves, tech accessories, and more — crafted with precision, designed for you.",
+        "exploreCollection": "Explore Collection",
+        "viewBestsellers": "View Bestsellers"
     },
     "bestsellerProducts": {
         "title": "Bestsellers",
@@ -53,8 +53,11 @@ const en = {
         "empty": "No bestsellers to show yet.",
     },
     "categories": {
+        "title": "Shop By Category",
         "accessories": "3D Accessories",
+        "accessoriesDesc": "Custom 3D-printed decor pieces to personalize any space.",
         "acrylic": "Acrylic Signs & Designs",
+        "acrylicDesc": "Sleek, modern acrylic pieces cut and finished to order."
     },
     "featuredProducts": {
         "title": "Featured Collection",
@@ -142,6 +145,15 @@ const en = {
             "priceHighToLow": "Price: High to Low"
         },
         "pagination": { "previous": "Previous", "next": "Next" }
+    },
+    "bestsellers": {
+        "home": "Home",
+        "title": "Bestsellers",
+        "badge": "Trending Now",
+        "subtitle": "Our most-loved pieces, ranked by real customer orders.",
+        "error": "Failed to load bestsellers. Please try again.",
+        "noProducts": "No bestsellers yet — check back soon.",
+        "viewAll":"View All"
     },
     "productDetails": {
         "home": "Home",
