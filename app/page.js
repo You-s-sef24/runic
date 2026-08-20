@@ -11,8 +11,8 @@ export default function HomePage() {
 
         <HeroSection />
         <BestsellerSection />
-        <FeaturedProducts />
         <CategorySection />
+        <FeaturedProducts />
         <StreamlinedShopping />
 
       </div>

@@ -60,6 +60,8 @@ const en = {
         "acrylicDesc": "Sleek, modern acrylic pieces cut and finished to order."
     },
     "featuredProducts": {
+        "home": "Home",
+        "badge": "Handpicked",
         "title": "Featured Collection",
         "seeAll": "See All Collection",
         "error": "Failed to load products. Please try again later.",
