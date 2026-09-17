@@ -35,7 +35,7 @@ export default function CategorySection() {
   const displayedCategories = CATEGORIES.slice(0, 6);
 
   return (
-    <section className="py-10 sm:py-14">
+    <section className="py-2 sm:py-6">
       <div className="flex items-center justify-between mb-6 sm:mb-8">
         <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
           {t("categories.title")}
@@ -53,9 +53,14 @@ export default function CategorySection() {
         </Link>
       </div>
 
-      <div className="grid sm:grid-cols-3 gap-4 sm:gap-6">
+      <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
         {displayedCategories.map((category) => (
-          <CategoryCard key={category.id} category={category} />
+          <div
+            key={category.id}
+            className="w-full sm:w-[calc(33.333%-1rem)] lg:w-[calc(33.333%-1.25rem)]"
+          >
+            <CategoryCard category={category} />
+          </div>
         ))}
       </div>
     </section>

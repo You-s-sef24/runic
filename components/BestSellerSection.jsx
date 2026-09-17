@@ -11,7 +11,7 @@ export default function BestsellerSection() {
   const { data: products, isLoading, isError } = useGetBestseller();
 
   return (
-    <section className="py-10 sm:py-14">
+    <section className="py-2 sm:py-6">
       <div className="flex items-center justify-between mb-6 sm:mb-8">
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-zinc-100 tracking-tight">
           {t("bestsellerProducts.title")}
