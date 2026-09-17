@@ -32,7 +32,7 @@ export default function CategorySection() {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
 
-  const displayedCategories = CATEGORIES.slice(0, 3);
+  const displayedCategories = CATEGORIES.slice(0, 6);
 
   return (
     <section className="py-10 sm:py-14">
