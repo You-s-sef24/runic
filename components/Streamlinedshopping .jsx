@@ -28,7 +28,7 @@ export default function StreamlinedShopping() {
   ];
 
   return (
-    <section className="py-10 sm:py-14">
+    <section className="py-2 sm:py-6">
       <div className="rounded-2xl bg-blue-200/70 dark:bg-zinc-900 px-6 sm:px-10 py-10 sm:py-14 text-center transition-colors duration-300">
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-zinc-100 max-w-lg mx-auto leading-snug capitalize">
           {t("features.heading")}
