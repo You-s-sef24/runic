@@ -162,7 +162,7 @@ const en = {
         "collection": "Collection",
         "loadError": "Failed to load this product. Please try again later.",
         "imageAlt": "Product image",
-        "frameSize": "Frame Size",
+        "frameSize": "Size",
         "inches": "in",
         "category": "Category",
         "addToCart": "Add to Cart",

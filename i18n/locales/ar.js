@@ -162,7 +162,7 @@ const ar = {
         "collection": "المجموعة",
         "loadError": "تعذّر تحميل هذا المنتج. حاول مرة أخرى لاحقًا.",
         "imageAlt": "صورة المنتج",
-        "frameSize": "مقاس الإطار",
+        "frameSize": "المقاس",
         "inches": "بوصة",
         "category": "الفئة",
         "addToCart": "أضف إلى السلة",
