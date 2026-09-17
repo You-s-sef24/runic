@@ -74,6 +74,8 @@ const en = {
       "Modular pegboards and organizers designed for effortless setup.",
     frames: "Frames",
     framesDesc: "Premium framed art and displays built to elevate your walls.",
+    decorations: "Decorations",
+    decorationsDesc: "Unique decorative items to enhance your space.",
   },
   featuredProducts: {
     home: "Home",

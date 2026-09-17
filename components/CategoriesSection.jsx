@@ -22,6 +22,10 @@ const CATEGORIES = [
     id: "frames",
     imageUrl: "/frames.png",
   },
+  {
+    id: "decorations",
+    imageUrl: "/decorations.png",
+  },
 ];
 
 export default function CategorySection() {

@@ -30,6 +30,7 @@ const CATEGORIES = [
   { id: "acrylic", translationKey: "categories.acrylic" },
   { id: "pegboard", translationKey: "categories.pegboard" },
   { id: "frames", translationKey: "categories.frames" },
+  { id: "decorations", translationKey: "categories.decorations" },
 ];
 
 const SORT_OPTIONS = [

@@ -22,6 +22,10 @@ const CATEGORIES = [
     id: "frames",
     imageUrl: "/frames.png",
   },
+  {
+    id: "decorations",
+    imageUrl: "/decorations.png",
+  },
 ];
 
 export default function CategoriesPage() {
@@ -34,9 +38,7 @@ export default function CategoriesPage() {
           {t("categories.home", "Home")}
         </Link>
         <ChevronRight size={12} className="opacity-60 rtl:rotate-180" />
-        <span className="text-foreground/70">
-          {t("Categories")}
-        </span>
+        <span className="text-foreground/70">{t("Categories")}</span>
       </nav>
 
       <div className="mb-8">
